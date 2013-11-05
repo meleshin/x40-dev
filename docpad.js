@@ -1,4 +1,5 @@
-﻿var docpadConfig = {
+﻿var assets = {};
+var docpadConfig = {
 	templateData: {
 		site: {
 			title: "X40",
@@ -17,15 +18,58 @@
 		},
 		getPreparedKeywords: function() {
 			return this.site.keywords.concat(this.document.keywords || []).join(', ');
+		} 
+	},
+	events: {
+		renderBefore: function(opts){
+			var me = this;
+			opts.templateData.asset = function(name){
+				if (assets[srcPath]) return assets[srcPath].name;
+				var crypto = require('crypto');
+				var path = require('path')
+				var shasum = crypto.createHash('sha1');
+				var f = this.getFileAtPath(name);
+				shasum.update(f.attributes.source);
+				var hash = shasum.digest('hex');
+				var srcPath = f.attributes.fullPath;
+				var relativeOutDirPath = f.attributes.relativeOutDirPath;
+				var outBasename = hash;
+				var relativeOutBase = relativeOutDirPath + path.sep + outBasename;
+				var outFilename = outBasename + "." + f.attributes.outExtension;
+				var relativeOutPath = relativeOutBase + "." + f.attributes.outExtension;
+				var outDirPath = me.docpad.config.outPath + path.sep + relativeOutDirPath;
+				var outPath = outDirPath + path.sep + outFilename;
+				var nameStart = name.lastIndexOf("/") + 1;
+				var extStart = name.lastIndexOf(".");
+				var newName = name.substring(0, nameStart) + hash + (extStart >= nameStart ?  name.substring(extStart) : '');
+				assets[srcPath] = {
+					relativeOutDirPath: relativeOutDirPath,
+					outBasename: outBasename,
+					relativeOutBase: relativeOutBase,
+					outFilename: outFilename,
+					relativeOutPath: relativeOutPath,
+					outDirPath: outDirPath,
+					outPath: outPath,
+					name: newName
+                };
+				return assets[srcPath].name;
+			};
 		},
-		vers: function(name){
-			var crypto = require('crypto');
-			var shasum = crypto.createHash('sha1');
-			var f = this.getFileAtPath(name);
-			shasum.update(f.attributes.source);
-			var hash = shasum.digest('hex');
-			return name + '?v=' + hash;
-		}
+		writeBefore: function(opts){
+			opts.collection.forEach(function(document){
+				srcPath = document.attributes.fullPath;
+				if (assets[srcPath]){
+					document.attributes.relativeOutDirPath = assets[srcPath].relativeOutDirPath
+                    document.attributes.outBasename = assets[srcPath].outBasename
+                    document.attributes.relativeOutBase = assets[srcPath].relativeOutBase
+                    document.attributes.outFilename = assets[srcPath].outFilename
+                    document.attributes.relativeOutPath = assets[srcPath].relativeOutPath
+                    document.attributes.outDirPath = assets[srcPath].outDirPath
+                    document.attributes.outPath = assets[srcPath].outPath
+				}
+			});
+		},
+		generateAfter: function(){assets = {}}
 	},
 	environments: {
 		static: {

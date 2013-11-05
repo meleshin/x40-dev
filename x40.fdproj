@@ -33,7 +33,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Custom" />
-    <option testMovieCommand="sh run.sh" />
+    <option testMovieCommand="_run.bat" />
   </options>
   <!-- Plugin storage -->
   <storage />
