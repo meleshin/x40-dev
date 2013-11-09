@@ -8,7 +8,7 @@ var docpadConfig = {
 		},
 		getPreparedTitle: function() {
 			if (this.document.title) {
-				return "" + this.document.title + " | " + this.site.title;
+				return this.document.title + " | " + this.site.title;
 			} else {
 				return this.site.title;
 			}
@@ -17,8 +17,14 @@ var docpadConfig = {
 			return this.document.description || this.site.description;
 		},
 		getPreparedKeywords: function() {
-			return this.site.keywords.concat(this.document.keywords || []).join(', ');
-		} 
+			return this.document.keywords || this.site.keywords;
+		},
+		getHead:  function() {
+			return this.document.head || '';
+		},
+		getBottom:  function() {
+			return this.document.bottom || '';
+		}
 	},
 	events: {
 		renderBefore: function(opts){

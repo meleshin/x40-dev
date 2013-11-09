@@ -2,11 +2,23 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title><%- @getPreparedTitle() %></title>
 	<meta name="description" content="<%= @getPreparedDescription() %>" />
 	<meta name="keywords" content="<%= @getPreparedKeywords() %>" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=device-width">
+	<% if @document.libJqueryUI: %>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
+	<% end %>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<% if @document.libVideo: %>
+		<link rel="stylesheet" href="//vjs.zencdn.net/4.2/video-js.css">
+	<% end %>
+	<% if @document.libBigVideo: %>
+		<link rel="stylesheet" href="/scripts/bigvideo-1.0.2-2/css/bigvideo.css">
+	<% end %>
+	<%- @getHead() %>
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -23,8 +35,37 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
 </head>
 <body>
+	
 	<%- @content %>
+	
 	<%- @getBlock('scripts').toHTML() %>
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<% if @document.libJqueryUI: %>
+		<script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+	<% end %>
+	<% if @document.libVideo: %>
+		<script src="//vjs.zencdn.net/4.2/video.js"></script>
+	<% end %>
+	<% if @document.libBigVideo: %>
+		<script src="/scripts/bigvideo-1.0.2-2/lib/bigvideo.js"></script>
+	<% end %>
+	<% if @document.libTubular: %>
+		<script type="text/javascript" charset="utf-8" src="//cdn.jsdelivr.net/jquery.tubular/1.0.1/jquery.tubular.1.0.js"></script>
+	<% end %>
+	<% if @document.libOkVideo: %>
+		<script type="text/javascript" src="/scripts/okvideo-git-20131107/okvideo.js"></script>
+	<% end %>
+	<% if @document.libImagesLoaded: %>
+		<script type="text/javascript" src="/scripts/imagesloaded-git-20131109/imagesloaded.pkgd.min.js"></script>
+	<% end %>
+	<% if @document.libModernizr: %>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+	<% end %>
+	<% if @document.libTransit: %>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
+	<% end %>
+	<%- @getBottom() %>
 	<script src="<%- @asset('/scripts/script.js') %>"></script>
 </body>
 </html>
