@@ -5,5 +5,5 @@ x40.ru
 2. Install DocPad
 3. Clone this project by git
 4. Run in project root folder:
-> npm install
-> docpad run
+	- npm install
+	- docpad run
