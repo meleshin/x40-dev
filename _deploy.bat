@@ -1,2 +1,2 @@
-bash --login -c make
+bash --login -c "make deploy"
 pause

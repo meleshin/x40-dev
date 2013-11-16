@@ -75,7 +75,16 @@ var docpadConfig = {
 				}
 			});
 		},
-		generateAfter: function(){assets = {}}
+		generateAfter: function(){assets = {}},
+		render: function(opts){
+			if(opts.inExtension == "eco" || opts.outExtension == "html"){
+				opts.content = opts.content.replace(/^\s+|\s+$/gm, "");
+				opts.content = opts.content.replace(/\n</g, "<");
+				opts.content = opts.content.replace(/>\n/g, ">");
+				opts.content = opts.content.replace(/\n/g, " ");
+				opts.content = opts.content.replace(/<!--[\s\S]*?-->/g, "");
+			}
+		}
 	},
 	environments: {
 		static: {

@@ -1,9 +1,10 @@
 x40.ru
 ===
 
-1. Install Node
-2. Install DocPad
-3. Clone this project by git
-4. Run in project root folder:
-	- npm install
+1. Install make
+2. Install Node
+3. Install DocPad
+4. Clone this project by git
+5. Run in project root folder:
+	- ./configure
 	- docpad run

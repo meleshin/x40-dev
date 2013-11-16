@@ -13,8 +13,9 @@
     "docpad-plugin-livereload": "~2.5.3",
     "docpad-plugin-uglify": "~2.2.0",
     "docpad-plugin-cleanurls": "~2.5.1",
-    "docpad-plugin-htmlmin": "~2.0.1",
-    "docpad": "~6.54.5"
+    "docpad-plugin-htmlmin": "~2.1.2",
+    "docpad": "~6.54.6",
+    "docpad-plugin-hogan": "~2.0.2"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {
