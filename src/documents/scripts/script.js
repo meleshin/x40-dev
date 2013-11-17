@@ -8,8 +8,13 @@
 		navigation();
 	});
 	function navigation(){
+		var duration = 1000;
 		var topDelta = '90px';
 		var leftDelta = '25px';
+		var zStaticImg = 500;
+		var zStaticPage = 600;
+		var zAnimImg = 700;
+		var zAnimPage = 800;
 		var pageAns = [
 			[{left: '-100%', top: topDelta}, {left: leftDelta, top: topDelta}],
 			[{left: leftDelta, top: '-100%'}, {left: leftDelta, top: topDelta}],
@@ -24,34 +29,38 @@
 		];
 		var pageCursor = 0;
 		var imgCursor = 0;
-		var currentPageId;
-		var currentImage;
 		var lastBackgrounds = {};
 		var BV = null;
-		if (!Modernizr.touch) {
-			BV = new $.BigVideo();
-			BV.init();
-		}
+		var clickHash;
 		if (!$.support.transition) {$.fn.transition = $.fn.animate;}
 		$("a").each(function() {if(this.hash) this.hash = this.hash.replace('#','#!')});
 		nav(location.hash);
 		$("nav a").click(function(e) {
-			var locationBH = location.href.replace(location.hash, '');
-			var thisBH = this.href.replace(this.hash, '');
+			var locationBH = location.hash ? location.href.replace(location.hash, '') : location.href.replace(/#$/,'');
+			var thisBH = this.hash ? this.href.replace(this.hash, '') : this.href.replace(/#$/,'');
 			if(this.hash && thisBH == locationBH){
-				nav(this.hash, true);
+				nav(this.hash);
+				clickHash = this.hash;
 				location.hash = this.hash;
 				e.preventDefault();
 			} else if(thisBH == locationBH){
-				nav(this.hash, true);
+				nav(this.hash);
+				clickHash = '';
 				location.hash = '';
 				e.preventDefault();
 			}
 		});
 		$(window).on('hashchange', function(e) {
-			nav(location.hash);
+			if(location.hash !== clickHash){
+				nav(location.hash);
+			}
 		});
-		$(window).on('resize', function(){adjustImage(currentImage)});
+		$(window).on('resize', function(){
+			$(".static-img").each(function(){
+				img = this;
+				adjustImageCss(img, {top: 0, left: 0}, function(css){$(img).css(css);});
+			});
+		});
 		function pageAnim(){
 			pageCursor = pageCursor == pageAns.length-1 ? 0 : pageCursor + 1;
 			return pageAns[pageCursor];
@@ -63,7 +72,8 @@
 		function bgImage(hash) {
 			var dataBGs = $($(hash).attr('data-bg'));
 			var i = typeof lastBackgrounds[hash] !== "undefined" && lastBackgrounds[hash] < dataBGs.length - 1 ? lastBackgrounds[hash] + 1 : 0;
-			if(currentImage && dataBGs[i] === currentImage){
+			var bg = $(".static-img");
+			if(bg.length >0 && bg[0].src === dataBGs[i].src){
 				i = i < dataBGs.length - 1 ? i+1 : 0;
 			}
 			lastBackgrounds[hash] = i;
@@ -72,68 +82,67 @@
 		function bgVideoUrl(img){
 			return $(img).attr('src').replace(/.jpg$/,".mp4");
 		}
-		function nav(hash, reloadIfCurrent){
-			if(typeof reloadIfCurrent === "undefined") reloadIfCurrent = false;
+		function nav(hash){
 			if(!hash || hash == '#'){
 				hash = '#index';
 			}else{
 				hash = hash.replace('#!','#')
 			}
-			if(reloadIfCurrent || hash !== currentPageId){
-				var duration = 3000;
-				var img = bgImage(hash);
+			var img = bgImage(hash);
+			function showPage(){
 				var pageAn = pageAnim();
+				$(hash).css(pageAn[0]);
+				takeLayer(hash, "anim-page"); 
+				$(hash).transition(pageAn[1], duration, function(){
+					takeLayer(hash, "static-page");
+				});
+			}
+			if( $(img).css('visibility') == 'visible' ){
+				showPage();
+			} else {
 				var imgAn = imgAnim();
-				var currentPageIdL = currentPageId;
-				var currentImageL = currentImage;
-				currentPageId = hash;
-				currentImage = img;
 				var imgStartCss = imgAn[0];
-				imgStartCss.visibility = 'visible';
-				imgStartCss.opacity = 1;
-				imgStartCss["z-index"] = 500;
 				adjustImageCss(img, imgStartCss, function(){
 					$(img).css(imgStartCss);
 					var imgEndCss = imgAn[1];
 					adjustImageCss(img, imgEndCss, function(){
+						takeLayer(img, "anim-img");
 						$(img).transition(imgEndCss, duration, function(){
 							adjustImageCss(img, imgEndCss, function(){$(img).css(imgEndCss);});
-							if(BV !== null){
+							if (!Modernizr.touch) {
+								if (BV === null) {
+									BV = new $.BigVideo();
+									BV.init();
+								}
 								BV.show(bgVideoUrl(img),{ambient:true});
 								BV.getPlayer().on('playing', function() {
-									if(currentPageIdL !== currentPageId) {
-										$(currentPageIdL).css({visibility: 'hidden'});
-									}
-									$(img).css({visibility: 'hidden'});
+									$(".static-img").css({visibility: 'hidden'});
 								});
 							}
-							var pageStartCss = pageAn[0];
-							pageStartCss.visibility = 'visible';
-							pageStartCss["z-index"] = 501;
-							$(hash).css(pageStartCss);
-							$(hash).transition(pageAn[1], duration, function(){
-								if(currentPageIdL && currentPageId !== currentPageIdL){
-									$(currentPageIdL).css({visibility: 'hidden'});
-								}
-								if(currentImageL && currentImage !== currentImageL){
-									$(currentImageL).css({visibility: 'hidden'});
-								}
-								$(img).css({"z-index": 250});
-								$(hash).css({"z-index": 251});
-							});
+							cleanLayer("static-page")
+							takeLayer(img, "static-img");
+							showPage();
 						});
 					});
 				});
 			}
 		}
-		function adjustImage(image, func){
-			var css = {top: 0, left: 0};
-			adjustImageCss(image, css, function(){
-				$(image).css(css);
-				if (typeof func === "function"){
-					func();
-				}
+		function cleanLayer(clss){
+			$("."+clss).each(function(){
+				$(this).css({visibility: 'hidden'});
+				$(this).removeClass(clss);
 			});
+		}
+		function toLayer(q, clss){
+			$(q).css({
+				visibility: 'visible'
+			});
+			$(q).removeClass("static-page static-img anim-page anim-img");
+			$(q).addClass(clss);
+		}
+		function takeLayer(q, clss){
+			cleanLayer(clss);
+			toLayer(q, clss)
 		}
 		function adjustImageCss(image, css, func){
 			var $img = $(image);
@@ -154,11 +163,23 @@
 					newImgH = windowH;
 					newImgW = imgRatio * newImgH;
 				}
-				css.width = newImgW;
-				css.height = newImgH;
-				if(parseInt(css.top) == 0) css["margin-top"] = (windowH - newImgH) / 2 + "px";
-				if(parseInt(css.left) == 0) css["margin-left"] = (windowW - newImgW) / 2 + "px";
-				func();
+				css.width = Math.round(newImgW);
+				css.height = Math.round(newImgH);
+				if(parseInt(css.top) == 0){
+					css["margin-top"] = Math.round((windowH - newImgH) / 2) + "px";
+				}else if(css.top == '-100%'){
+					css["margin-top"] = Math.round(windowH - newImgH) + "px";
+				} else{
+					css["margin-top"] = 0;
+				}
+				if(parseInt(css.left) == 0){
+					css["margin-left"] = Math.round((windowW - newImgW) / 2) + "px";
+				}else if(css.left == '-100%'){
+					css["margin-left"] = Math.round(windowW - newImgW) + "px";
+				} else{
+					css["margin-left"] = 0;
+				}
+				func(css);
 			}
 		}
 	}
