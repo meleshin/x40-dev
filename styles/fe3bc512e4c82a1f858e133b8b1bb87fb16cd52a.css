@@ -5,12 +5,12 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 .anim-page{z-index:800}
 .anim-img{z-index:700}
 .nav-pane{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000}
-#top-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;margin-top:16px;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";background-color:#000;background-color:rgba(0,0,0,0.8);margin-bottom:1px}#top-nav .phone{color:#f55;font-size:115%;padding-right:30px;padding-left:15px}
+#top-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;margin-top:16px;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";background-color:#000;background-color:rgba(0,0,0,0.7);margin-bottom:1px}#top-nav .phone{color:#f55;font-size:115%;padding-right:30px;padding-left:15px}
 #top-nav .navbar-toggle{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";background-color:transparent}
 #top-nav .navbar-toggle:hover,#top-nav .navbar-toggle:focus{-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";background-color:#fff;background-color:rgba(255,255,255,0.2)}
 #top-nav a{color:#fff}#top-nav a:hover{color:#FFC455}
 #top-nav a.navbar-brand{color:#FFC455;font-size:270%}#top-nav a.navbar-brand:hover{color:#fff}
-#top-nav #off,#top-nav #on{color:#FFC455}#top-nav #off:hover,#top-nav #on:hover{color:#f55}
+#top-nav #off,#top-nav #on{min-width:80px;color:#FFC455}#top-nav #off:hover,#top-nav #on:hover{color:#f55}
 #top-nav #off.inactive,#top-nav #on.inactive{color:#333}
 #top-nav button{color:#fff}
 #side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";background-color:#0000c4;background-color:rgba(0,0,196,0.8);min-height:0px}#side-nav li{float:none}
