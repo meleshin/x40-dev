@@ -1,2 +1,2 @@
-bash --login -c "docpad run"
+make run
 pause

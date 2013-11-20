@@ -7,17 +7,11 @@
 	<meta name="description" content="<%= @getPreparedDescription() %>" />
 	<meta name="keywords" content="<%= @getPreparedKeywords() %>" />
 	<meta name="viewport" content="width=device-width">
-	<% if @document.libJqueryUI: %>
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
-	<% end %>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
 	<link rel="stylesheet" href="/lib/bootstrap-3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-	<% if @document.libVideo: %>
-		<link rel="stylesheet" href="//vjs.zencdn.net/4.2/video-js.css">
-	<% end %>
-	<% if @document.libBigVideo: %>
-		<link rel="stylesheet" href="/lib/bigvideo-1.0.2-2/css/bigvideo.css">
-	<% end %>
+	<link rel="stylesheet" href="//vjs.zencdn.net/4.2/video-js.css">
+	<link rel="stylesheet" href="/lib/bigvideo-1.0.2-2/css/bigvideo.css">
 	<link rel="stylesheet" href="<%- @asset('/styles/style.css') %>">
 	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -53,6 +47,8 @@
 	</div>
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav navbar-right">
+			<li><a id="off" href="/?off=1" style="display:block">Выкл.</a></li>
+			<li><a id="on" href="/?on=1" style="display:none">Вкл.</a></li>
 			<li><a href="/">Главная</a></li>
 			<li><a href="/projects">Проекты</a></li>
 			<li><a href="/#contacts">Контакты</a></li>
@@ -80,16 +76,11 @@
 	
 <%- @getBlock('scripts').toHTML() %>
 <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="/lib/bootstrap-3.0.2/js/bootstrap.min.js"></script>
-<% if @document.libJqueryUI: %>
-	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-<% end %>
-<% if @document.libVideo: %>
-	<script src="//vjs.zencdn.net/4.2/video.js"></script>
-<% end %>
-<% if @document.libBigVideo: %>
-	<script src="/lib/bigvideo-1.0.2-2/lib/bigvideo.js"></script>
-<% end %>
+<script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<script src="//vjs.zencdn.net/4.2/video.js"></script>
+<script src="/lib/bigvideo-1.0.2-2/lib/bigvideo.js"></script>
 <% if @document.libTubular: %>
 	<script type="text/javascript" charset="utf-8" src="//cdn.jsdelivr.net/jquery.tubular/1.0.1/jquery.tubular.1.0.js"></script>
 <% end %>
@@ -99,12 +90,8 @@
 <% if @document.libImagesLoaded: %>
 	<script type="text/javascript" src="/lib/imagesloaded-git-20131109/imagesloaded.pkgd.min.js"></script>
 <% end %>
-<% if @document.libModernizr: %>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-<% end %>
-<% if @document.libTransit: %>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
-<% end %>
+<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
 <%- @getBottom() %>
 <script src="<%- @asset('/scripts/script.js') %>"></script>
 

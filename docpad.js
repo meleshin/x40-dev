@@ -93,6 +93,13 @@ var docpadConfig = {
 					enabled: false
 				}
 			}
+		},
+		development: {
+			plugins: {
+				uglify: {
+					all: false
+				}
+			}
 		}
 	}
 };
