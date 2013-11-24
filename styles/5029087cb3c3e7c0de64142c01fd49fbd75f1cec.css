@@ -26,7 +26,7 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 #top-nav button{color:#fff}
 #top-nav li.navbar-text{margin-top:10px;margin-bottom:10px;color:#ff9571;color:rgba(255,149,113,0.8);padding-right:10px}
 #top-nav .in li.navbar-text,#top-nav .collapsing li.navbar-text{padding-left:15px}
-#side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#c30;background-color:rgba(204,51,0,0.7);min-height:0px}#side-nav li{float:none}#side-nav li a{color:#fff}#side-nav li a:hover{color:#C4C4FF}
+#side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#c30;background-color:rgba(204,51,0,0.6);min-height:0px}#side-nav li{float:none}#side-nav li a{color:#fff}#side-nav li a:hover{color:#C4C4FF}
 #side-nav .navbar-collapse{border:0}
 #side-nav .fa-li{top:0.8em;left:-1.5em}#side-nav .fa-li.fa-lg{top:0.6em;left:-1.4em}
 #side-nav .in li,#side-nav .collapsing li{padding-left:20px}
@@ -34,7 +34,7 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 #side-padding.collapsing,#side-padding.in{display:none}
 .page{position:absolute;width:100%;height:100%;visibility:hidden;background-color:#fff;background-color:rgba(255,255,255,0.9);border-top-left-radius:50px}
 #page-wrapper{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;margin-right:2px;margin-bottom:2px}#page-wrapper>img{position:absolute;visibility:hidden}
-.page-content{padding:15px 40px 105px 15px;}.page-content i{color:#c30;color:rgba(204,51,0,0.76);text-shadow:4px 4px 4px #fff}
+.page-content{padding:15px 40px 105px 15px;}.page-content i{color:#c30;color:rgba(204,51,0,0.72);text-shadow:4px 4px 4px #fff}
 #off-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#222;display:table;text-align:center}#off-bg i{font-size:2000%;display:table-cell;vertical-align:middle;opacity:0.2}
 .aa-fix{-webkit-text-stroke:1px !important}
 .no-shadow{text-shadow:none !important}
