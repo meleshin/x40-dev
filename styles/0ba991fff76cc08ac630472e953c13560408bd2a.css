@@ -21,12 +21,14 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 #top-nav .navbar-toggle:hover,#top-nav .navbar-toggle:focus{background-color:#fff;background-color:rgba(255,255,255,0.2)}
 #top-nav a{color:#fff}#top-nav a:hover{color:#FFC455}
 #top-nav a.navbar-brand{color:#FFC455}#top-nav a.navbar-brand:hover{color:#fff}
+#top-nav li a.active{color:#f55;background-color:#000;background-color:rgba(0,0,0,0.3)}
 #top-nav #off,#top-nav #on{min-width:100px;color:#FFC455}#top-nav #off:hover,#top-nav #on:hover{color:#f55}
 #top-nav #off.inactive,#top-nav #on.inactive{color:#333}
 #top-nav button{color:#fff}
 #top-nav li.navbar-text{margin-top:10px;margin-bottom:10px;color:#ff9571;color:rgba(255,149,113,0.8);padding-right:10px}
 #top-nav .in li.navbar-text,#top-nav .collapsing li.navbar-text{padding-left:15px}
 #side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#c30;background-color:rgba(204,51,0,0.6);min-height:0px}#side-nav li{float:none}#side-nav li a{color:#fff}#side-nav li a:hover{color:#C4C4FF}
+#side-nav li a.active{color:#FFFDA4;background-color:transparent}
 #side-nav .navbar-collapse{border:0}
 #side-nav .fa-li{top:0.8em;left:-1.5em}#side-nav .fa-li.fa-lg{top:0.6em;left:-1.4em}
 #side-nav .in li,#side-nav .collapsing li{padding-left:20px}
