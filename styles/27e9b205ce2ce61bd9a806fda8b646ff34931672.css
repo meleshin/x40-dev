@@ -1,0 +1,49 @@
+@import url(http://fonts.googleapis.com/css?family=Dosis:400|Open+Sans+Condensed:300,700&subset=latin,cyrillic);
+@font-face{font-family:'neogrey_regularregular';src:url('neogreyregular-webfont.eot');src:url('neogreyregular-webfont.eot?#iefix') format('embedded-opentype'),url('neogreyregular-webfont.woff') format('woff'),url('neogreyregular-webfont.ttf') format('truetype'),url('neogreyregular-webfont.svg#neogrey_regularregular') format('svg');font-weight:normal;font-style:normal}@font-face{font-family:'sony_sketch_efregular';src:url('sony_sketch_ef-webfont.eot');src:url('sony_sketch_ef-webfont.eot?#iefix') format('embedded-opentype'),url('sony_sketch_ef-webfont.woff') format('woff'),url('sony_sketch_ef-webfont.ttf') format('truetype'),url('sony_sketch_ef-webfont.svg#sony_sketch_efregular') format('svg');font-weight:normal;font-style:normal}h1{font-family:"neogrey_regularregular",Arial,Helvetica,sans-serif;font-size:5em;text-shadow:-2px 2px 2px rgba(30,30,30,0.3),4px 4px 5px #fff;text-align:center}h1 i{text-shadow:4px 4px 4px #fff}
+h2,h3,h4{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300}h2 i,h3 i,h4 i,h2 i:before,h3 i:before,h4 i:before{font-family:FontAwesome}
+h2,h3,h4{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300}h2 i,h3 i,h4 i,h2 i:before,h3 i:before,h4 i:before{font-family:FontAwesome}
+body{font-family:Arial,Helvetica,sans-serif;font-weight:400;color:#000;background-color:#222;background-image:url(/images/fuzz.gif)}
+a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0.3s;-ms-transition:color 0.3s;transition:color 0.3s}a:focus{outline:none}
+.static-page{z-index:600}
+.static-img{z-index:500}
+.anim-page{z-index:800}
+.anim-img{z-index:700}
+.nav-pane{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000}
+.logo{font-family:"Dosis",Arial,Helvetica,sans-serif;font-weight:400}
+#top-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;margin-top:16px;background-color:#000;background-color:rgba(0,0,0,0.7)}#top-nav .navbar-toggle{background-color:transparent}
+#top-nav .navbar-toggle:hover,#top-nav .navbar-toggle:focus{background-color:#fff;background-color:rgba(255,255,255,0.2)}
+#top-nav a{color:#fff;font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-size:1.3em;font-weight:300;padding-left:10px;padding-right:10px}#top-nav a:hover{color:#55FF9D}
+#top-nav a.navbar-brand{color:#FFC455}#top-nav a.navbar-brand:hover{color:#55FF9D}
+#top-nav a.color1{color:#FF8C8C}#top-nav a.color1:hover{color:#fff}
+#top-nav a.color2{color:#55FF9D}#top-nav a.color2:hover{color:#fff}
+#top-nav a.color3{color:#BBBBFF}#top-nav a.color3:hover{color:#fff}
+#top-nav a.navbar-brand{font-size:2.4em;font-family:"Dosis",Arial,Helvetica,sans-serif;font-weight:400}
+#top-nav li.phone{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-size:1.3em;font-weight:700;margin-bottom:0px;margin-top:12px}
+#top-nav li a.active{background-color:#000;background-color:rgba(255,255,255,0.1)}
+#top-nav #off,#top-nav #on{min-width:100px;color:#FFC455}#top-nav #off:hover,#top-nav #on:hover{color:#55FF9D}
+#top-nav #off.inactive,#top-nav #on.inactive{color:#333}
+#top-nav button{color:#fff}
+#top-nav li.phone{color:#FFC455;padding-right:10px}
+#top-nav .in li.phone,#top-nav .collapsing li.phone{padding-left:15px}
+#side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#00c850;background-color:rgba(0,195,60,0.7);min-height:0px}#side-nav li{float:none}#side-nav li a{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300;font-size:1.2em;color:#fff}#side-nav li a:hover{color:#a4f9ff}
+#side-nav li a.active{background-color:transparent;text-decoration:underline}
+#side-nav .navbar-collapse{border:0}
+#side-nav .fa-li{top:0.8em;left:-1.5em}#side-nav .fa-li.fa-lg{top:0.6em;left:-1.4em}
+#side-nav .in li,#side-nav .collapsing li{padding-left:20px}
+#side-padding{height:21px}#side-padding.collapse{display:block}
+#side-padding.collapsing,#side-padding.in{display:none}
+.page{position:absolute;width:100%;height:100%;visibility:hidden;background-color:#fff;background-color:rgba(255,255,255,0.8);border-top-left-radius:50px}
+#page-wrapper{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;margin-right:2px;margin-bottom:2px}#page-wrapper>img{position:absolute;visibility:hidden}
+.page-content{padding:15px 40px 105px 15px}.page-content h1,.page-content i{color:#dc0078;color:rgba(220,0,120,0.7)}
+.page-content i{text-shadow:4px 4px 4px #fff}
+.page-content a{color:#5955FF}
+.box{background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}
+.center-menu{font-size:2em;font-family:'sony_sketch_efregular',Arial,Helvetica,sans-serif;line-height:1em;background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}.center-menu a{color:#fff;color:rgba(255,255,255,0.9);text-decoration:none}.center-menu a:hover{color:rgba(255,255,255,0.6);text-decoration:none}
+.page-box{font-size:1.2em;background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}.page-box a{color:#fff;text-decoration:underline}.page-box a:hover{color:#fff;text-decoration:none}
+#off-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#222;display:table;text-align:center}#off-bg i{font-size:2000%;display:table-cell;vertical-align:middle;opacity:0.2}
+.aa-fix{-webkit-text-stroke:1px !important}
+.no-shadow{text-shadow:none !important}
+.sqrIco{background-color:rgba(100,100,100,0.2) !important;display:inline-block !important;width:15px;height:15px;margin:5px}
+.center-wrapper{float:right;position:relative;left:-50%;text-align:left}.center-wrapper>ul,.center-wrapper>div,.center-wrapper>p{position:relative;left:50%}
+.clear{clear:both}
+@media only screen and (max-width:800px){.page-content{font-size:120%} h1{font-size:300%} .center-menu{font-size:120%}}@media only screen and (max-width:400px){.page-content{font-size:120%} h1{font-size:140%} .center-menu{font-size:120%}}
