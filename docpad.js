@@ -82,7 +82,7 @@ var docpadConfig = {
 				opts.content = opts.content.replace(/\n</g, "<");
 				opts.content = opts.content.replace(/>\n/g, ">");
 				opts.content = opts.content.replace(/\n/g, " ");
-				opts.content = opts.content.replace(/<!--[\s\S]*?-->/g, "");
+				//opts.content = opts.content.replace(/<!--[\s\S]*?-->/g, "");
 			}
 		}
 	},
