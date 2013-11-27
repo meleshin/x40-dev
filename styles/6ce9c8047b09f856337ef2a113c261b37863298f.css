@@ -25,8 +25,8 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 #top-nav button{color:#fff}
 #top-nav li.phone{color:#FFC455;padding-right:10px}
 #top-nav .in li.phone,#top-nav .collapsing li.phone{padding-left:15px}
-#side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#00c850;background-color:rgba(0,195,60,0.7);min-height:0px}#side-nav li{float:none}#side-nav li a{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300;font-size:1.2em;color:#fff}#side-nav li a:hover{color:#a4f9ff}
-#side-nav li a.active{background-color:transparent;text-decoration:underline}
+#side-nav{border-top-left-radius:10px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-bottom-left-radius:10px;border:0;z-index:10000;background-color:#00b478;background-color:rgba(0,180,120,0.7);min-height:0px}#side-nav li{float:none}#side-nav li a{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300;font-size:1.2em;color:#fff}#side-nav li a:hover{color:#4af7ff}
+#side-nav li a.active{background-color:transparent;text-decoration:none;color:#9BFFEE}
 #side-nav .navbar-collapse{border:0}
 #side-nav .fa-li{top:0.8em;left:-1.5em}#side-nav .fa-li.fa-lg{top:0.6em;left:-1.4em}
 #side-nav .in li,#side-nav .collapsing li{padding-left:20px}
@@ -34,12 +34,14 @@ a{-webkit-transition:color 0.3s;-moz-transition:color 0.3s;-o-transition:color 0
 #side-padding.collapsing,#side-padding.in{display:none}
 .page{position:absolute;width:100%;height:100%;visibility:hidden;background-color:#fff;background-color:rgba(255,255,255,0.8);border-top-left-radius:50px}
 #page-wrapper{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;margin-right:2px;margin-bottom:2px}#page-wrapper>img{position:absolute;visibility:hidden}
-.page-content{padding:15px 40px 105px 15px}.page-content h1,.page-content i{color:#dc0078;color:rgba(220,0,120,0.7)}
-.page-content i{text-shadow:4px 4px 4px #fff}
-.page-content a{color:#5955FF}
-.box{background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}
-.center-menu{font-size:2em;font-family:'sony_sketch_efregular',Arial,Helvetica,sans-serif;line-height:1em;background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}.center-menu a{color:#fff;color:rgba(255,255,255,0.9);text-decoration:none}.center-menu a:hover{color:rgba(255,255,255,0.6);text-decoration:none}
-.page-box{font-size:1.2em;background-color:#dc0078;background-color:rgba(220,0,120,0.6);border-radius:30px;color:#fff;padding:15px 30px;max-width:600px}.page-box a{color:#fff;text-decoration:underline}.page-box a:hover{color:#fff;text-decoration:none}
+.page-content{padding:15px 40px 105px 15px}.page-content i{text-shadow:4px 4px 4px #fff}
+.color0.page .page-box{background-color:#fff;background-color:rgba(255,255,255,0.6);color:#000;border-width:1px;border-color:#B2B2B2;border-style:solid}
+.color0.page h1,.color0.page i{color:rgba(0,0,0,0.9)}
+.color0 a{color:#00f !important;text-decoration:underline !important}.color0 a:hover{color:#00B3FF !important}
+.color1.page .page-box{background-color:#c80000;background-color:rgba(200,0,0,0.6);color:#fff}
+.color1.page h1,.color1.page i{color:#c80000;color:rgba(200,0,0,0.7)}
+.center-menu{font-size:2em !important;font-family:'sony_sketch_efregular',Arial,Helvetica,sans-serif !important;line-height:1em !important}.center-menu a{color:#fff !important;color:rgba(255,255,255,0.9) !important;text-decoration:none !important}.center-menu a:hover{color:#e6e6e6 !important;color:rgba(255,255,255,0.6) !important;text-decoration:none !important}
+.page-box{border-radius:30px;padding:15px 30px;max-width:600px;font-size:1.2em}.page-box a{color:#fff;text-decoration:underline}.page-box a:hover{color:#fff;text-decoration:none}
 #off-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#222;display:table;text-align:center}#off-bg i{font-size:2000%;display:table-cell;vertical-align:middle;opacity:0.2}
 .aa-fix{-webkit-text-stroke:1px !important}
 .no-shadow{text-shadow:none !important}
