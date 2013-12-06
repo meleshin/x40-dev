@@ -68,85 +68,6 @@
 		var clickHash = null;
 		var $sideNav = $("#side-nav");
 		var sideNavBgColor = $sideNav.css("background-color");
-		var BytesPerSec = function bytesPerSecSet(){
-			var me = this;
-			this.q = [];
-			var bytesPerSecC = $.cookie('bytesPerSec');
-			this.bytesPerSec = bytesPerSecC ? bytesPerSecC : null;
-			if(this.bytesPerSec === null){
-				$(window).load(function() {
-					/*var load = "/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random();
-					var startTime = null, endTime = null;
-					var xmlhttp;
-					if ( window.XMLHttpRequest ) {
-						xmlhttp = new XMLHttpRequest();
-					}else{
-						xmlhttp = new ActiveXObject ( "Microsoft.XMLHTTP" );
-					}
-					xmlhttp.onreadystatechange = function () {
-						if(xmlhttp.readyState == 1 && startTime === null){
-							startTime = (new Date()).getTime();
-						}else if (xmlhttp.readyState === 4 && endTime == null){
-							endTime = (new Date()).getTime();
-							var sec = (endTime - startTime) / 1000;
-							if (sec == 0) sec = 0.001;
-							var loadBytes = xmlhttp.responseText.length;
-							me.bytesPerSec = loadBytes / sec;
-							$.cookie('bytesPerSec', me.bytesPerSec);
-							console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec ("+loadBytes+" bytes in "+sec.toFixed(2)+" sec).");
-							me.runQ();
-						}
-					}
-					console.log("Bandwidth test...");
-					xmlhttp.open( "GET", load, true );
-					xmlhttp.send();*/
-					var startTime = (new Date()).getTime();
-					startTime = (new Date()).getTime();
-					console.log("Bandwidth testing...");
-					$.ajax({
-						url: "/images/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random(),
-						cache: false,
-						success: function (data, status, jqXHR) {
-							var endTime = (new Date()).getTime();
-							var sec = (endTime - startTime) / 1000;
-							if (sec == 0) sec = 0.001;
-							var loadBytes = jqXHR.responseText.length;
-							me.bytesPerSec = loadBytes / sec;
-							$.cookie('bytesPerSec', me.bytesPerSec);
-							console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec ("+loadBytes+" bytes in "+sec.toFixed(2)+" sec).");
-							me.runQ()
-						}
-					});
-					/*var startTime = (new Date()).getTime();
-					startTime = (new Date()).getTime();
-					console.log("Bandwidth test...");
-					var url = "/images/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random();
-					var bytes = 73214;
-					var img = $("<img />").attr('src', url).load(function() {
-						var endTime = (new Date()).getTime();
-						var sec = (endTime - startTime) / 1000;
-						if (sec == 0) sec = 0.001;
-						me.bytesPerSec = bytes / sec;
-						$.cookie('bytesPerSec', me.bytesPerSec);
-						console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec (downloaded "+bytes+" bytes in "+sec.toFixed(2)+" sec).");
-						me.runQ()
-					});*/
-				});
-			}
-			this.get = function(func){
-				this.q.push(func);
-				this.runQ();
-			};
-			this.runQ = function(){
-				if(this.bytesPerSec !== null){
-					for (var i = 0; i < this.q.length; i++) {
-						this.q[i](this.bytesPerSec);
-					}
-					this.q = [];
-				}
-			};
-		};
-		var bytesPS = new BytesPerSec();
 		$("a").each(function() {if(this.hash) this.hash = this.hash.replace('#','#!');});
 		nav(location);
 		$("a").click(function(e) {
@@ -250,29 +171,6 @@
 			lastBackgrounds[hash] = i;
 			return $(dataBGs[i]);
 		}
-		function bgVideoUrl($img, func){
-			var bandwReservRatio = 1; //1.3;
-			var dvStr = $img.attr('data-video');
-			if(!dvStr){
-				func($img.attr('src').replace(/.jpg$/,".mp4")); 
-			}else{
-				var dv = eval('('+dvStr+')');
-				bytesPS.get(function(byPS){
-					var minUrl = null;
-					var maxGoodUrl = null;
-					for(var i=0; i<dv.urls.length; i++){
-						if(minUrl === null || dv.urls[i].bytes < minUrl.bytes){
-							minUrl = dv.urls[i];
-						}	
-						var downloadSec = bandwReservRatio * dv.urls[i].bytes / byPS;
-						if( downloadSec < dv.sec && (maxGoodUrl === null || dv.urls[i].bytes > maxGoodUrl.bytes) ){
-							maxGoodUrl = dv.urls[i];
-						}
-					}
-					func( maxGoodUrl === null ? minUrl.url : maxGoodUrl.url );
-				});
-			}
-		}
 		function nav(locationOrA){
 			$("a").each(function() {
 				$(this).parents('li').removeClass("active");
@@ -314,21 +212,21 @@
 									BV = new $.BigVideo();
 									BV.init();
 								}
-								bgVideoUrl($img, function(videoUrl){
-									BV.show(videoUrl,{ambient:true});
-									var player = BV.getPlayer();
-									var started = false;
-									player.on("playing", function() {
-										if(!started){
-											$(".static-img").css({display: "none"});
-											started = true;
-										}
-									});
-									player.on("waiting", function() {
-										if(started){
-											console.log("waiting");
-										}
-									});
+								var videoUrl = $img.attr('data-video');
+								if(!videoUrl) videoUrl = $img.attr('src').replace(/.jpg$/,".mp4");
+								BV.show(videoUrl,{ambient:true});
+								var player = BV.getPlayer();
+								var started = false;
+								player.on("playing", function() {
+									if(!started){
+										$(".static-img").css({display: "none"});
+										started = true;
+									}
+								});
+								player.on("waiting", function() {
+									if(started){
+										console.log("waiting");
+									}
 								});
 							}
 							cleanLayer("static-page");
