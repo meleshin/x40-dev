@@ -1,49 +1,47 @@
-(function() {
-	var opacityes = [
-		['#top-nav', 70],
-		['#top-nav .navbar-toggle', 80],
-		['#top-nav .navbar-toggle:focus', 20],
-		['#top-nav li.navbar-text', 80],
-		['#side-nav', 75],
-		['.page', 80],
-		['.page-content i', 72],
-		['#off-bg i', 20],
-		['.center-menu, .page-box', 70]
-		]
-	var isIE8; 
-	$(function() {
-		isIE8 = $('html').hasClass('ie8');
+(function() { $(function() {
+	var isIE8 = $('html').hasClass('ie8');
+	if (!$.support.transition) {
+		$.fn.transition = $.fn.animate;
+	}
+	design();
+	navigation();
+	opacityFix();
+	function design(){
 		var collapseHide = function(){
 			$('.navbar-collapse.in, #side-padding.in').collapse('hide');
 			$('#side-padding').css("height","");
 		}
 		$('.navbar-collapse').click('li', collapseHide);
 		$(window).on('resize', collapseHide);
-		$(".page").wrapInner('<div class="col-sm-9 page-content"></div>');
-		$(".page").append('<div class="col-sm-3"></div>');
-		$(".page-content").each(function(){
-			for(var i=0; i<100; i++){
-				$(this).append('<div class="sqrIco"></div>');
+		var $page = $(".page");
+		$page.wrapInner('<div class="col-sm-9 page-content"></div>');
+		$('<div class="col-sm-3"></div>').appendTo($page);
+		$page.wrapInner('<div class="page-paper"></div>');
+		$('<div class="film1"></div>').insertBefore($('.page-paper'));
+		$('<div class="film2"></div>').insertAfter($('.page-paper'));
+		$('.page-paper').scroll(function(){
+			var fPoz = Math.round($(this).scrollTop()/2);
+			$('.film1, .film2').css("background-position","-"+fPoz+"px 0");
+			var scr = Math.round($(this).scrollTop()/4);
+			var r = Math.abs( (0+180+scr)%360-180 );
+			var g = Math.abs( (180+180+scr)%360-180 );
+			var b = Math.abs( (120+180+scr)%360-180 );
+			var rs = Math.abs( (200+200+scr)%400-200 );
+			var gs = Math.abs( (0+200+scr*2)%400-200 );
+			var bs = Math.abs( (0+200+scr/2)%400-200 );
+			if(Modernizr.opacity){
+				$("#side-nav").css({'background-color': 'rgba('+r+', '+g+', '+b+', 0.7)'});
+				$(".nicescroll-rails div").css({'background-color': 'rgba('+rs+', '+gs+', '+bs+', 0.8)'});
+				//$('.desktop, .mobile, .desktop>div, .mobile>div').css({'border-color': 'rgba('+rs+', '+gs+', '+bs+', 0.7)'});
+			}else{
+				$("#side-nav").css({'background-color': 'rgb('+r+', '+g+', '+b+')'});
+				$(".nicescroll-rails div").css({'background-color': 'rgb('+rs+', '+gs+', '+bs+')'});
 			}
+			
 		});
-		navigation();
-		opacityFix();
-	});
-	function opacityFix(){
-		if(!Modernizr.opacity){
-			var $head = $('head');
-			var style = '<style type="text/css">';
-			for(var i = 0; i < opacityes.length; i++){
-				style += opacityes[i][0] + ' {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='+opacityes[i][1]+')";}';
-			}
-			style += '</style>';
-			$head.append($(style));
-		}
 	}
 	function navigation(){
 		var duration = 800;
-		var topDelta = '90px';
-		var leftDelta = '25px';
 		var zOff = 900;
 		var zStaticImg = 500;
 		var zStaticPage = 600;
@@ -52,10 +50,10 @@
 		var isOff = false;
 		var isPreOff = false;
 		var pageAns = [
-			[{left: '-100%', top: 0, "margin-top": topDelta}, {left: 0, "margin-left": leftDelta, top: 0, "margin-top": topDelta}],
-			[{left: 0, "margin-left": leftDelta, top: '-100%'}, {left: 0, "margin-left": leftDelta, top: 0, "margin-top": topDelta}],
-			[{left: '100%', top: 0, "margin-top": topDelta}, {left: 0, "margin-left": leftDelta, top: 0, "margin-top": topDelta}],
-			[{left: 0, "margin-left": leftDelta, top: '100%'}, {left: 0, "margin-left": leftDelta, top: 0, "margin-top": topDelta}]
+			[{left: '-100%', top: 0}, {left: 0, top: 0}],
+			[{left: 0, top: '-100%'}, {left: 0, top: 0}],
+			[{left: '100%', top: 0}, {left: 0, top: 0}],
+			[{left: 0, top: '100%'}, {left: 0, top: 0}]
 		];
 		var imgAns = [
 			[{left: 0, top: '-100%'}, {left: 0, top: 0}],
@@ -68,7 +66,8 @@
 		var lastBackgrounds = {};
 		var BV = null;
 		var clickHash = null;
-		var sideNavBgColor = $("#side-nav").css("background-color");
+		var $sideNav = $("#side-nav");
+		var sideNavBgColor = $sideNav.css("background-color");
 		var BytesPerSec = function bytesPerSecSet(){
 			var me = this;
 			this.q = [];
@@ -76,47 +75,62 @@
 			this.bytesPerSec = bytesPerSecC ? bytesPerSecC : null;
 			if(this.bytesPerSec === null){
 				$(window).load(function() {
-					var unic = Math.random();
-					var imgAddr0 = "/images/bandwidth0.jpg" + "?n=" + unic;
-					var imgAddr1 = "/images/bandwidth1.jpg" + "?n=" + unic;
-					var imgBytes1 = 16614;
-					var imgAddr2 = "/images/bandwidth2.jpg" + "?n=" + unic;
-					var imgBytes2 = 73214;
-					var startTime1, endTime1, startTime2, endTime2;
-					var img0 = new Image();
-					var img1 = new Image();
-					var img2 = new Image();
-					img0.onload = function () {
-						img1.onload = function () {
-							endTime1 = (new Date()).getTime();
-							var sec1 = (endTime1 - startTime1) / 1000;
-							var bytesPerSec1 = imgBytes1 / sec1;
-							img2.onload = function () {
-								endTime2 = (new Date()).getTime();
-								var sec2 = (endTime2 - startTime2) / 1000;
-								var bytesPerSec2 = imgBytes2 / sec2;
-								var dsec = (sec2 - sec1);
-								if(dsec > 0){
-									me.bytesPerSec = (imgBytes2 - imgBytes1) / dsec;
-								} else if (sec2 !== 0){
-									me.bytesPerSec = imgBytes2 / sec2;
-								} else if (sec1 !== 0) {
-									me.bytesPerSec = imgBytes1 / sec1;
-								} else {
-									me.bytesPerSec = imgBytes2 / 0.001;
-								}
-								$.cookie('bytesPerSec', me.bytesPerSec);
-								//console.log("Bandwidth: " + Math.round(me.bytesPerSec/1024) + " KB/sec");
-								me.runQ();	
-							};
-							startTime2 = (new Date()).getTime();
-							img2.src = imgAddr2;
-						};
-						startTime1 = (new Date()).getTime();
-						img1.src = imgAddr1;
-					};
-					//console.log("Bandwidth test...");
-					img0.src = imgAddr0;
+					/*var load = "/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random();
+					var startTime = null, endTime = null;
+					var xmlhttp;
+					if ( window.XMLHttpRequest ) {
+						xmlhttp = new XMLHttpRequest();
+					}else{
+						xmlhttp = new ActiveXObject ( "Microsoft.XMLHTTP" );
+					}
+					xmlhttp.onreadystatechange = function () {
+						if(xmlhttp.readyState == 1 && startTime === null){
+							startTime = (new Date()).getTime();
+						}else if (xmlhttp.readyState === 4 && endTime == null){
+							endTime = (new Date()).getTime();
+							var sec = (endTime - startTime) / 1000;
+							if (sec == 0) sec = 0.001;
+							var loadBytes = xmlhttp.responseText.length;
+							me.bytesPerSec = loadBytes / sec;
+							$.cookie('bytesPerSec', me.bytesPerSec);
+							console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec ("+loadBytes+" bytes in "+sec.toFixed(2)+" sec).");
+							me.runQ();
+						}
+					}
+					console.log("Bandwidth test...");
+					xmlhttp.open( "GET", load, true );
+					xmlhttp.send();*/
+					var startTime = (new Date()).getTime();
+					startTime = (new Date()).getTime();
+					console.log("Bandwidth testing...");
+					$.ajax({
+						url: "/images/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random(),
+						cache: false,
+						success: function (data, status, jqXHR) {
+							var endTime = (new Date()).getTime();
+							var sec = (endTime - startTime) / 1000;
+							if (sec == 0) sec = 0.001;
+							var loadBytes = jqXHR.responseText.length;
+							me.bytesPerSec = loadBytes / sec;
+							$.cookie('bytesPerSec', me.bytesPerSec);
+							console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec ("+loadBytes+" bytes in "+sec.toFixed(2)+" sec).");
+							me.runQ()
+						}
+					});
+					/*var startTime = (new Date()).getTime();
+					startTime = (new Date()).getTime();
+					console.log("Bandwidth test...");
+					var url = "/images/bandwidth.jpg" + "?n=" + startTime + "_" + Math.random();
+					var bytes = 73214;
+					var img = $("<img />").attr('src', url).load(function() {
+						var endTime = (new Date()).getTime();
+						var sec = (endTime - startTime) / 1000;
+						if (sec == 0) sec = 0.001;
+						me.bytesPerSec = bytes / sec;
+						$.cookie('bytesPerSec', me.bytesPerSec);
+						console.log("Bandwidth: " + (me.bytesPerSec/1024/1024*8).toFixed(2) + " Mb/sec (downloaded "+bytes+" bytes in "+sec.toFixed(2)+" sec).");
+						me.runQ()
+					});*/
 				});
 			}
 			this.get = function(func){
@@ -133,9 +147,6 @@
 			};
 		};
 		var bytesPS = new BytesPerSec();
-		if (!$.support.transition) {
-			$.fn.transition = $.fn.animate;
-		}
 		$("a").each(function() {if(this.hash) this.hash = this.hash.replace('#','#!');});
 		nav(location);
 		$("a").click(function(e) {
@@ -175,7 +186,7 @@
 				$('body').append('<div id="off-bg" style="z-index:'+zOff+';"><i class="fa fa-smile-o fa-lg"></i></div>');
 				if(Modernizr.opacity){
 					$("#off-bg").css({opacity: 0});
-					$("#side-nav").transition({opacity: 0.3}, 200);
+					$sideNav.transition({opacity: 0.3}, 200);
 					$("#off-bg").transition({opacity: 1}, 300, function(){
 						$("#off-bg").css("background-image","url(/images/fuzz.gif)");
 						isOff = true;
@@ -195,7 +206,7 @@
 				$("#off").css({display: "block"});
 				$("#on").css({display: "none"});
 				if(Modernizr.opacity){
-					$("#side-nav").transition({opacity: 1}, duration/2);
+					$sideNav.transition({opacity: 1}, duration/2);
 					$("#off-bg").css("background-image","none")
 						.transition({opacity: 0}, duration, function(){
 							$("#off-bg").remove();
@@ -240,7 +251,7 @@
 			return $(dataBGs[i]);
 		}
 		function bgVideoUrl($img, func){
-			var bandwReservRatio = 1.3;
+			var bandwReservRatio = 1; //1.3;
 			var dvStr = $img.attr('data-video');
 			if(!dvStr){
 				func($img.attr('src').replace(/.jpg$/,".mp4")); 
@@ -283,7 +294,7 @@
 			if($(".static-img").length > 0){
 				$("nav").css({"background-image": "url(/images/fuzz.gif)"});
 			}
-			if( $img.css('visibility') == 'visible' ){
+			if( $img.css('display') != 'none' ){
 				showPage();
 			} else {
 				var imgAn = imgAnim();
@@ -305,8 +316,18 @@
 								}
 								bgVideoUrl($img, function(videoUrl){
 									BV.show(videoUrl,{ambient:true});
-									BV.getPlayer().on('playing', function() {
-										$(".static-img").css({visibility: 'hidden'});
+									var player = BV.getPlayer();
+									var started = false;
+									player.on("playing", function() {
+										if(!started){
+											$(".static-img").css({display: "none"});
+											started = true;
+										}
+									});
+									player.on("waiting", function() {
+										if(started){
+											console.log("waiting");
+										}
 									});
 								});
 							}
@@ -318,6 +339,9 @@
 				});
 			}
 			function showPage(){
+				$(".page-paper").getNiceScroll().remove();
+				$('.film1, .film2').css({"background-position": "0 0"});
+				if($.support.transition) $('.film1, .film2').transition({"background-position": "-"+504*4+"px 0"},5000);
 				var pageAn = pageAnim();
 				var startCss = pageAn[0];
 				if($.support.transition) startCss.opacity = 0;
@@ -333,11 +357,13 @@
 				if($.support.transition) endCss.opacity = 1;
 				$hash.transition(endCss, duration, function(){
 					takeLayer($hash, "static-page");
+					$(hash+" .page-paper").niceScroll({zindex: 100000, autohidemode: true, horizrailenabled: false, cursoropacitymin: 0.6, cursoropacitymax: 1, background: "transparent", cursorborder: '1px solid #fff', cursorwidth: '8px', cursorcolor: 'rgb(200, 0, 0)'});
+						//if background not transparent then right side of page flashes after showing
 					if($("nav").css("background-image")!=="none"){
 						$("nav").css({"background-image": "none"});
 						if(Modernizr.opacity){
-							$("#side-nav").css({"background-color": "rgba(51, 51, 51,1)"});
-							$("#side-nav").transition({"background-color": sideNavBgColor}, 1000);
+							$sideNav.css({"background-color": "rgba(51, 51, 51,1)"});
+							$sideNav.transition({"background-color": sideNavBgColor}, 1000);
 						}
 					}
 					if(isIE8){
@@ -349,13 +375,13 @@
 		function cleanLayer(clss){
 			$("."+clss).each(function(){
 				var $this = $(this);
-				$this.css({visibility: 'hidden'});
+				$this.css({display: 'none'});
 				$this.removeClass(clss);
 			});
 		}
 		function toLayer($q, clss){
 			$q.css({
-				visibility: 'visible'
+				display: 'block'
 			});
 			$q.removeClass("static-page static-img anim-page anim-img");
 			$q.addClass(clss);
@@ -402,4 +428,26 @@
 			img.src = $img.attr('src');
 		}
 	}
-}).call(this);
+	function opacityFix(){
+		if(!Modernizr.opacity){
+			var opacityes = [
+				['#top-nav', 70],
+				['#top-nav .navbar-toggle', 80],
+				['#top-nav .navbar-toggle:focus', 20],
+				['#top-nav li.navbar-text', 80],
+				['#side-nav', 75],
+				['.page-paper', 90],
+				['.page-content i', 72],
+				['#off-bg i', 20],
+				['.center-menu, .page-box', 70]
+			]
+			var $head = $('head');
+			var style = '<style type="text/css">';
+			for(var i = 0; i < opacityes.length; i++){
+				style += opacityes[i][0] + ' {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='+opacityes[i][1]+')";}';
+			}
+			style += '</style>';
+			$head.append($(style));
+		}
+	}
+}); }).call(this);
