@@ -1,7 +1,7 @@
 {
-  "name": "no-skeleton.docpad",
+  "name": "x40",
   "version": "0.1.0",
-  "description": "New DocPad project without using a skeleton",
+  "description": "x40.ru - IT Outsourcing",
   "engines": {
     "node": "0.10",
     "npm": "1.3"

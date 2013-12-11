@@ -31,13 +31,16 @@
 			var bs = Math.abs( (0+200+scr/2)%400-200 );
 			if(Modernizr.opacity){
 				$("#side-nav").css({'background-color': 'rgba('+r+', '+g+', '+b+', 0.7)'});
-				$(".nicescroll-rails div").css({'background-color': 'rgba('+rs+', '+gs+', '+bs+', 0.8)'});
+				//$(".nicescroll-rails div").css({'background-color': 'rgba('+rs+', '+gs+', '+bs+', 0.8)'});
 				//$('.desktop, .mobile, .desktop>div, .mobile>div').css({'border-color': 'rgba('+rs+', '+gs+', '+bs+', 0.7)'});
 			}else{
 				$("#side-nav").css({'background-color': 'rgb('+r+', '+g+', '+b+')'});
-				$(".nicescroll-rails div").css({'background-color': 'rgb('+rs+', '+gs+', '+bs+')'});
+				//$(".nicescroll-rails div").css({'background-color': 'rgb('+rs+', '+gs+', '+bs+')'});
 			}
 			
+		});
+		$('#side-nav a').each(function(){
+			$(this).attr('data-hover',$(this).text());
 		});
 	}
 	function navigation(){
@@ -191,6 +194,7 @@
 			var $img = bgImage(hash);
 			if($(".static-img").length > 0){
 				$("nav").css({"background-image": "url(/images/fuzz.gif)"});
+				$('#side-nav a.active').css("color",'#FF7D8D');
 			}
 			if( $img.css('display') != 'none' ){
 				showPage();
@@ -237,7 +241,10 @@
 				});
 			}
 			function showPage(){
-				$(".page-paper").getNiceScroll().remove();
+				$(".page-paper").each(function(){
+					var s = $(this).getNiceScroll(0);
+					if (s) s.hide();
+				});
 				$('.film1, .film2').css({"background-position": "0 0"});
 				if($.support.transition) $('.film1, .film2').transition({"background-position": "-"+504*4+"px 0"},5000);
 				var pageAn = pageAnim();
@@ -255,10 +262,17 @@
 				if($.support.transition) endCss.opacity = 1;
 				$hash.transition(endCss, duration, function(){
 					takeLayer($hash, "static-page");
-					$(hash+" .page-paper").niceScroll({zindex: 100000, autohidemode: true, horizrailenabled: false, cursoropacitymin: 0.6, cursoropacitymax: 1, background: "transparent", cursorborder: '1px solid #fff', cursorwidth: '8px', cursorcolor: 'rgb(200, 0, 0)'});
-						//if background not transparent then right side of page flashes after showing
+					var $p = $(hash+" .page-paper");
+					var s = $p.getNiceScroll(0);
+					if(s){
+						s.show();
+					}else{
+						$p.niceScroll({zindex: 100000, autohidemode: true, horizrailenabled: true, cursoropacitymin: 0.6, cursoropacitymax: 1, background: "transparent", cursorborder: '1px solid #fff', cursorwidth: '8px', cursorcolor: 'rgb(200, 0, 0)'});
+							//if background not transparent then right side of page flashes after showing
+					}
 					if($("nav").css("background-image")!=="none"){
 						$("nav").css({"background-image": "none"});
+						$('#side-nav a').css("color","");
 						if(Modernizr.opacity){
 							$sideNav.css({"background-color": "rgba(51, 51, 51,1)"});
 							$sideNav.transition({"background-color": sideNavBgColor}, 1000);

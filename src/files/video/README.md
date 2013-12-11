@@ -36,3 +36,9 @@ Squares background, http://vimeo.com/album/189227/video/9848191, CC License
 
 jumpback_-_underwater_sapphire_1280x720.mp4
 TV like theme, http://vimeo.com/album/189227/video/24273718, CC License
+	
+rmx_(loop)_1280x560.mp4
+http://vimeo.com/79293746, CC License
+
+lightgrid_(loop)_1280x720.mp4
+http://vimeo.com/76432043, CC License
