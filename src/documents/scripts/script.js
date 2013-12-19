@@ -26,22 +26,17 @@
 			var r = Math.abs( (0+180+scr)%360-180 );
 			var g = Math.abs( (180+180+scr)%360-180 );
 			var b = Math.abs( (120+180+scr)%360-180 );
-			var rs = Math.abs( (200+200+scr)%400-200 );
-			var gs = Math.abs( (0+200+scr*2)%400-200 );
-			var bs = Math.abs( (0+200+scr/2)%400-200 );
 			if(Modernizr.opacity){
 				$("#side-nav").css({'background-color': 'rgba('+r+', '+g+', '+b+', 0.7)'});
-				//$(".nicescroll-rails div").css({'background-color': 'rgba('+rs+', '+gs+', '+bs+', 0.8)'});
-				//$('.desktop, .mobile, .desktop>div, .mobile>div').css({'border-color': 'rgba('+rs+', '+gs+', '+bs+', 0.7)'});
 			}else{
 				$("#side-nav").css({'background-color': 'rgb('+r+', '+g+', '+b+')'});
-				//$(".nicescroll-rails div").css({'background-color': 'rgb('+rs+', '+gs+', '+bs+')'});
 			}
-			
 		});
 		$('#side-nav a').each(function(){
 			$(this).attr('data-hover',$(this).text());
 		});
+		$('<div class="sequence-pagination"></div>').appendTo('#sequence');
+		$('#sequence .view').clone().appendTo('#sequence .sequence-pagination');
 	}
 	function navigation(){
 		var duration = 800;
@@ -104,7 +99,7 @@
 			}
 			function switchOff(){
 				isPreOff = true;
-				$("#on").addClass("inactive");
+				$("#on a").addClass("inactive");
 				$("#off").css({display: "none"});
 				$("#on").css({display: "block"});
 				$('body').append('<div id="off-bg" style="z-index:'+zOff+';"><i class="fa fa-smile-o fa-lg"></i></div>');
@@ -115,18 +110,18 @@
 						$("#off-bg").css("background-image","url(/images/fuzz.gif)");
 						isOff = true;
 						isPreOff = false;
-						$("#on").removeClass("inactive");
+						$("#on a").removeClass("inactive");
 					});
 				}else{
 					$("#off-bg").css("background-image","url(/images/fuzz.gif)");
 					isOff = true;
 					isPreOff = false;
-					$("#on").removeClass("inactive");
+					$("#on a").removeClass("inactive");
 				}
 				clickHash = location.hash;
 			}
 			function switchOn(){
-				$("#off").addClass("inactive");
+				$("#off a").addClass("inactive");
 				$("#off").css({display: "block"});
 				$("#on").css({display: "none"});
 				if(Modernizr.opacity){
@@ -135,12 +130,12 @@
 						.transition({opacity: 0}, duration, function(){
 							$("#off-bg").remove();
 							isOff = false;
-							$("#off").removeClass("inactive");
+							$("#off a").removeClass("inactive");
 						});
 				}else{
 					$("#off-bg").remove();
 					isOff = false;
-					$("#off").removeClass("inactive");
+					$("#off a").removeClass("inactive");
 				}
 			}
 		});
@@ -281,6 +276,48 @@
 					if(isIE8){
 						$ie8style.remove();
 					}
+					var options = {
+						nextButton: true,
+						prevButton: true,
+						pagination: true,
+						animateStartingFrameIn: true,
+						autoPlay: true,
+						autoPlayDelay: 3000,
+						preloader: true,
+						preloadTheseFrames: [1],
+						preloadTheseImages: [
+							"/images/newbigjob.png",
+							"/images/newbigjob-m.png",
+							"/images/mobivisor.png",
+							"/images/surwave.png",
+							"/images/surwave-m.png",
+							"/images/vreggy.png",
+							"/images/.sigmahomepng",
+							"/images/hitechhow.png",
+							"/images/hth-crm.png",
+							"/images/frescostudio.png"
+						]
+					};
+					var $sequence = $("#sequence");
+					if($sequence.length > 0){
+						var mySequence = $("#sequence").sequence(options).data("sequence");
+						var sequenceH = function(){
+							var baseW = 1051;
+							var baseH = 450;
+							var hBordersAndPagination = 40 + 74;
+							var currentHBordersAndPagination = 40 + $('#sequence .sequence-pagination').height();
+							var currentW = $('#sequence .sequence-canvas').width();
+							var newH = currentHBordersAndPagination + (baseH - hBordersAndPagination)*currentW/baseW;
+							var ww = $(window).width();
+							if(ww <= 500){
+								newH += Math.round(80*ww/500);
+								//$('.sequence-prev, .sequence-next').css("top", "15%");
+							}
+							$('#sequence').css("height", newH+'px');
+						}
+						sequenceH();
+						$(window).on('resize', sequenceH);
+					}
 				});
 			}
 		}
@@ -351,7 +388,8 @@
 				['.page-paper', 90],
 				['.page-content i', 72],
 				['#off-bg i', 20],
-				['.center-menu, .page-box', 70]
+				['.center-menu, .page-box', 70],
+				['.descr', 70]
 			]
 			var $head = $('head');
 			var style = '<style type="text/css">';
