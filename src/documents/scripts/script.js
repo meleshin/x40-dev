@@ -1,4 +1,5 @@
 (function() { $(function() {
+	var duration = 800;
 	var isIE8 = $('html').hasClass('ie8');
 	if (!$.support.transition) {
 		$.fn.transition = $.fn.animate;
@@ -20,8 +21,8 @@
 		$('<div class="film1"></div>').insertBefore($('.page-paper'));
 		$('<div class="film2"></div>').insertAfter($('.page-paper'));
 		$('.page-paper').scroll(function(){
-			var fPoz = Math.round($(this).scrollTop()/2);
-			$('.film1, .film2').css("background-position","-"+fPoz+"px 0");
+			//var fPoz = Math.round($(this).scrollTop()/2);
+			//$('.film1, .film2').css("background-position","-"+fPoz+"px 0");
 			var scr = Math.round($(this).scrollTop()/4);
 			var r = Math.abs( (0+180+scr)%360-180 );
 			var g = Math.abs( (180+180+scr)%360-180 );
@@ -35,11 +36,8 @@
 		$('#side-nav a').each(function(){
 			$(this).attr('data-hover',$(this).text());
 		});
-		$('<div class="sequence-pagination"></div>').appendTo('#sequence');
-		$('#sequence .view').clone().appendTo('#sequence .sequence-pagination');
 	}
 	function navigation(){
-		var duration = 800;
 		var zOff = 900;
 		var zStaticImg = 500;
 		var zStaticPage = 600;
@@ -53,6 +51,19 @@
 			[{left: '100%', top: 0}, {left: 0, top: 0}],
 			[{left: 0, top: '100%'}, {left: 0, top: 0}]
 		];
+		/*if($.support.transition && Modernizr.opacity) {
+				pageAns[1][0].transform = "rotate(45deg)";
+				pageAns[1][1].transform = "rotate(0deg)";
+				
+				pageAns[2][0].transform = "rotate3d(1,1,0,-90deg)";
+				pageAns[2][1].transform = "rotate3d(1,1,0,0deg)";
+				
+				pageAns[3][0].transform = "rotate3d(1,0,1,90deg)";
+				pageAns[3][1].transform = "rotate3d(1,0,1,0deg)";
+				
+				pageAns[0][0].transform = "rotate3d(1,1,0,180deg)";
+				pageAns[0][1].transform = "rotate3d(1,1,0,0deg)";
+		}*/
 		var imgAns = [
 			[{left: 0, top: '-100%'}, {left: 0, top: 0}],
 			[{left: '100%', top: 0}, {left: 0, top: 0}],
@@ -196,11 +207,11 @@
 			} else {
 				var imgAn = imgAnim();
 				var imgStartCss = imgAn[0];
-				if($.support.transition) imgStartCss.opacity = 0;
+				if($.support.transition && Modernizr.opacity) imgStartCss.opacity = 0;
 				adjustImageCss($img, imgStartCss, function(){
 					$img.css(imgStartCss);
 					var imgEndCss = imgAn[1];
-					if($.support.transition) imgEndCss.opacity = 1;
+					if($.support.transition && Modernizr.opacity) imgEndCss.opacity = 1;
 					adjustImageCss($img, imgEndCss, function(){
 						takeLayer($img, "anim-img");
 						$img.transition(imgEndCss, duration, function(){
@@ -240,11 +251,14 @@
 					var s = $(this).getNiceScroll(0);
 					if (s) s.hide();
 				});
-				$('.film1, .film2').css({"background-position": "0 0"});
-				if($.support.transition) $('.film1, .film2').transition({"background-position": "-"+504*4+"px 0"},5000);
+				var $film = $(hash+' .film1, '+hash+' .film2');
+				//$film.css({"background-position": "0 0"});
+				//if($.support.transition)  $film.transition({"background-position": "-"+504*4+"px 0"},5000,function(){filmAnim=false;});
 				var pageAn = pageAnim();
 				var startCss = pageAn[0];
-				if($.support.transition) startCss.opacity = 0;
+				if($.support.transition && Modernizr.opacity) {
+					startCss.opacity = 0;
+				}
 				$hash.css(startCss);
 				takeLayer($hash, "anim-page");
 				var $ie8style;
@@ -254,9 +268,15 @@
 					$head.append($ie8style);
 				}
 				var endCss = pageAn[1];
-				if($.support.transition) endCss.opacity = 1;
-				$hash.transition(endCss, duration, function(){
+				if($.support.transition && Modernizr.opacity){
+					endCss.opacity = 1;
+				}
+				projects();
+				$hash.transition(endCss, duration, 'cubic-bezier(0.215, 0.610, 0.355, 1.000)', function(){
 					takeLayer($hash, "static-page");
+					if($.support.transition && Modernizr.opacity){
+						$hash.transition({opacity: 1}, duration);
+					}
 					var $p = $(hash+" .page-paper");
 					var s = $p.getNiceScroll(0);
 					if(s){
@@ -275,48 +295,6 @@
 					}
 					if(isIE8){
 						$ie8style.remove();
-					}
-					var options = {
-						nextButton: true,
-						prevButton: true,
-						pagination: true,
-						animateStartingFrameIn: true,
-						autoPlay: true,
-						autoPlayDelay: 3000,
-						preloader: true,
-						preloadTheseFrames: [1],
-						preloadTheseImages: [
-							"/images/newbigjob.png",
-							"/images/newbigjob-m.png",
-							"/images/mobivisor.png",
-							"/images/surwave.png",
-							"/images/surwave-m.png",
-							"/images/vreggy.png",
-							"/images/.sigmahomepng",
-							"/images/hitechhow.png",
-							"/images/hth-crm.png",
-							"/images/frescostudio.png"
-						]
-					};
-					var $sequence = $("#sequence");
-					if($sequence.length > 0){
-						var mySequence = $("#sequence").sequence(options).data("sequence");
-						var sequenceH = function(){
-							var baseW = 1051;
-							var baseH = 450;
-							var hBordersAndPagination = 40 + 74;
-							var currentHBordersAndPagination = 40 + $('#sequence .sequence-pagination').height();
-							var currentW = $('#sequence .sequence-canvas').width();
-							var newH = currentHBordersAndPagination + (baseH - hBordersAndPagination)*currentW/baseW;
-							var ww = $(window).width();
-							if(ww <= 500){
-								newH += Math.round(80*ww/500);
-								//$('.sequence-prev, .sequence-next').css("top", "15%");
-							}
-							$('#sequence').css("height", newH+'px');
-						}
-						sequenceH();
-						$(window).on('resize', sequenceH);
 					}
 				});
 			}
@@ -375,6 +353,50 @@
 				func(css);
 			};
 			img.src = $img.attr('src');
+		}
+	}
+	function projects(){
+		var $sequence = $("#sequence");
+		if($sequence.length > 0){
+			var options = {
+				nextButton: true,
+				prevButton: true,
+				pagination: true,
+				animateStartingFrameIn: true,
+				autoPlay: true,
+				autoPlayDelay: 3000,
+				preloader: true,
+				preloadTheseFrames: [1],
+				preloadTheseImages: [
+					"/images/newbigjob-t.png",
+					"/images/newbigjob-m-t.png",
+					"/images/mobivisor-t.png",
+					"/images/surwave-t.png",
+					"/images/surwave-m-t.png",
+					"/images/vreggy-t.png",
+					"/images/sigmahome-t.png",
+					"/images/hitechhow-t.png",
+					"/images/hth-crm-t.png",
+					"/images/frescostudio-t.png"
+				]
+			};
+			var mySequence = $("#sequence").sequence(options).data("sequence");
+			var sequenceH = function(){
+				var baseW = 1051;
+				var baseH = 450;
+				var hBordersAndPagination = 40 + 74;
+				var currentHBordersAndPagination = 40 + $('#sequence .sequence-pagination').height();
+				var currentW = $('#sequence .sequence-canvas').width();
+				var newH = currentHBordersAndPagination + (baseH - hBordersAndPagination)*currentW/baseW;
+				var ww = $(window).width();
+				if(ww <= 500){
+					newH += Math.round(80*ww/500);
+				}
+				$('#sequence').css("height", newH+'px');
+			}
+			sequenceH();
+			$(window).on('resize', sequenceH);
+			$('#sequence, #sequence-other').transition({opacity: 1}, duration*3);
 		}
 	}
 	function opacityFix(){
