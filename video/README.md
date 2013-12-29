@@ -42,3 +42,16 @@ http://vimeo.com/79293746, CC License
 
 lightgrid_(loop)_1280x720.mp4
 http://vimeo.com/76432043, CC License
+
+jumpback_-_lavender_lava_lamp_480x272.mp4
+http://vimeo.com/9721472, CC License
+
+newprs_(loop)_1280x720.mp4
+http://vimeo.com/16038839, CC License
+
+cross6_(loop)_1280x720.mp4
+http://vimeo.com/11162767, CC License
+	
+nodes_(loop)_1280x720.mp4
+http://vimeo.com/9936271, CC License
+	
