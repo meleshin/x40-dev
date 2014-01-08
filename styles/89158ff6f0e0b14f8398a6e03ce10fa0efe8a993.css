@@ -124,3 +124,4 @@ a:hover{text-decoration:none;color:#0af}
 #img-bg-wrap .img-bg img.out{visibility:visible}
 .animated{-webkit-animation-duration:0.8s;animation-duration:0.8s}
 @keyframes page-in{0%{opacity:0;-webkit-transform:translateY(-2000px);-ms-transform:translateY(-2000px);transform:translateY(-2000px)} 60%{opacity:1;-webkit-transform:translateY(30px);-ms-transform:translateY(30px);transform:translateY(30px)} 80%{-webkit-transform:translateY(-10px);-ms-transform:translateY(-10px);transform:translateY(-10px)} 100%{-webkit-transform:translateY(0);-ms-transform:translateY(0);transform:translateY(0)}}.page-in{-webkit-animation-name:page-in;animation-name:page-in}
+#right{height:100%}#right #bg-autor{position:absolute;bottom:0;right:0}
