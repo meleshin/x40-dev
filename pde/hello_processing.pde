@@ -2,6 +2,7 @@
  PROCESSINGJS.COM HEADER ANIMATION  
  MIT License - F1lT3R/Hyper-Metrix
  Modifed by Casey Reas, 7 Nov 2013
+ Modifed by Roman Meleshin, 2014
  Native Processing Compatible 
  */
 
@@ -40,7 +41,7 @@ void setup() {
   // Frame rate
   frameRate(60);
   // Size of canvas (width,height)
-  size(700, 700);
+  size($(window).width(), $(window).height());
   // Stroke/line/border thickness
   strokeWeight(1);
   
