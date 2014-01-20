@@ -8,9 +8,10 @@ Modifed by Roman Meleshin, 2014
 // By F1LT3R - http://groups.google.com/group/processingjs
 
 void setup(){
-  size();
+  //size();
+  size($('.in .page-paper').width(), $('.in .page-paper').height());
   strokeWeight(5);
-  stroke(255);
+  stroke(255, 255, 255, 100);
   noFill();
 }
 
@@ -53,7 +54,7 @@ void draw(){
   
   // Set background color to to amplitude of sampleLoc   
   colorDelay = (255/sampleRate) * distXY[sampleLoc];  
-  background(0,0,0, 100);
+  background(255,255,255,0);
   
   // Get mouse inputs
   readMouse();
@@ -77,7 +78,7 @@ void draw(){
   
   // Draw curve
   noFill();
-  stroke(255);
+   stroke(255, 255, 255, 100);
   strokeWeight(10);
   beginShape();
   curveVertex( (width/(sampleRate-1))*0, height/2 - distXY[0] + offset );

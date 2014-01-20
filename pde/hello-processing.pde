@@ -41,7 +41,7 @@ void setup() {
   // Frame rate
   frameRate(60);
   // Size of canvas (width,height)
-  size($(window).width(), $(window).height());
+  size($('.in .page-paper').width(), $('.in .page-paper').height());
   // Stroke/line/border thickness
   strokeWeight(1);
   
