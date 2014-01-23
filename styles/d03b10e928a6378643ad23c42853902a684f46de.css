@@ -43,7 +43,7 @@ a:hover{text-decoration:none;color:#0af}
 #side-nav .navbar-collapse{border:0}
 #side-nav .fa-li{top:0.8em;left:-1.5em}#side-nav .fa-li.fa-lg{top:0.6em;left:-1.4em}
 #side-nav .in li,#side-nav .collapsing li{padding-left:20px}
-#side-nav li a:hover,#side-nav li a.active:hover{color:#62FFD0;color:rgba(0,0,0,0.5)}
+#side-nav li a:hover,#side-nav li a.active:hover{color:#62FFD0;color:rgba(255,255,255,0.8)}
 #side-nav li a{color:#fff}
 #side-nav .collapse li a::before{color:#fff;content:attr(data-hover);position:absolute;width:100%;height:100%;padding:15px;top:0;left:0;-webkit-transition:-webkit-transform .5s,opacity .5s;-moz-transition:-moz-transform .5s,opacity .5s;transition:transform 0.5s, opacity 0.5s}
 #side-nav .collapse li a.active::before{color:#FFF0B3}
@@ -129,5 +129,6 @@ a:hover{text-decoration:none;color:#0af}
 #img-bg-wrap,#sketch-bg-wrap{position:absolute !important;width:100%;height:100%;top:0;left:0}#img-bg-wrap .img-bg,#sketch-bg-wrap .img-bg{position:absolute;display:block}#img-bg-wrap .img-bg img,#sketch-bg-wrap .img-bg img{position:absolute;width:100%;height:100%;top:0;left:0;visibility:hidden;z-index:500}#img-bg-wrap .img-bg img.in,#sketch-bg-wrap .img-bg img.in{visibility:visible;z-index:600}#img-bg-wrap .img-bg img.in.over,#sketch-bg-wrap .img-bg img.in.over{z-index:900}
 #img-bg-wrap .img-bg img.out,#sketch-bg-wrap .img-bg img.out{visibility:visible}
 #img-bg-wrap.layer img,#sketch-bg-wrap.layer img{width:120%;height:120%;top:-10%;left:-10%}
+#three-bg-wrap{position:absolute;width:100%;height:100%;top:0;left:0}
 .animated{-webkit-animation-duration:1.3s;animation-duration:1.3s}
 .right{height:100%}.right .bg-author{position:absolute;bottom:0;right:0;padding-right:15px;color:#222;font-style:italic;-webkit-transition-duration:1s;-moz-transition-duration:1s;-ms-transition-duration:1s;-o-transition-duration:1s;transition-duration:1s;-webkit-transition-property:color;-moz-transition-property:color;-ms-transition-property:color;-o-transition-property:color;transition-property:color}.right .bg-author a{text-decoration:underline;color:#222;-webkit-transition-duration:2s;-moz-transition-duration:2s;-ms-transition-duration:2s;-o-transition-duration:2s;transition-duration:2s;-webkit-transition-property:color;-moz-transition-property:color;-ms-transition-property:color;-o-transition-property:color;transition-property:color}
