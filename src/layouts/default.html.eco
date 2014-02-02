@@ -6,52 +6,49 @@
 	<title><%- @getPreparedTitle() %></title>
 	<meta name="description" content="<%= @getPreparedDescription() %>" />
 	<meta name="keywords" content="<%= @getPreparedKeywords() %>" />
-	<meta name="viewport" content="width=device-width">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/ui-darkness/jquery-ui.min.css">
-	<link rel="stylesheet" href="/lib/bootstrap-3.0.2/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="lib/bootstrap-3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-	<link rel="stylesheet" href="/lib/video-js-4.3.0/video-js.min.css">
-	<link rel="stylesheet" href="/lib/bigvideo-1.0.2-2/css/bigvideo.css">
-	<link rel="stylesheet" href="/lib/nanoscroller-git-20131129/nanoscroller.css">
-	<link rel="stylesheet" href="<%- @asset('/styles/style.css') %>">
+	<link rel="stylesheet" href="lib/animate.css-git-20140102/animate.min.css">
+	<link rel="stylesheet" href="<%- @asset('styles/style.css') %>">
 	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-	<link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
-	<link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
-	<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
-	<link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-144x144.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png" />
 	<%- @getHead() %>
 </head>
 <body>
+<div id="loading"><div><img src="images/loading-a.gif" /></div></div>
+<div id="off-bg"><i class="fa fa-smile-o fa-lg"></i></div>
 <nav class="navbar navbar-default" role="navigation" id="top-nav">
 	<div class="navbar-header">
-		 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse, #side-padding">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse, #side-padding">
 			<span class="sr-only">Переключить навигацию</span>
-	  
 			<div style="float:left;">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			</div>
 			<div style="float:left; padding-left: 10px;">
-			Меню <b class="caret"></b>
+				Меню <b class="caret"></b>
 			</div>
-   
-	  </button>
-		<a class="navbar-brand logo" href="/">X40</a>
+		</button>
+		<a class="navbar-brand logo" href="./">X40</a>
 	</div>
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav navbar-right">
-			<li id="off" style="display:block;"><a href="/?off=1"><i class="fa fa-power-off fa-lg aa-fix"></i> Выкл.</a></li>
-			<li id="on" style="display:none;"><a href="/?on=1"><i class="fa fa-power-off fa-lg"></i> Вкл.</a></li>
-			<li><a href="/" class="color1"><i class="fa fa-home fa-lg c"></i> Главная</a></li>
-			<li><a href="/projects" class="color2"><i class="fa fa-check fa-lg"></i> Наши проекты</a></li>
-			<li><a href="/#contacts" class="color3"><i class="fa fa-phone fa-lg"></i> Контакты</a></li>
+			<li id="off" style="display:block;"><a class="muted" href="./?off=1"><i class="fa fa-power-off fa-lg aa-fix"></i> Выкл.</a></li>
+			<li id="on" style="display:none;"><a class="muted" href="./?on=1"><i class="fa fa-power-off fa-lg"></i> Вкл.</a></li>
+			<li><a href="./" class="color1"><i class="fa fa-home fa-lg c"></i> Главная</a></li>
+			<li><a href="projects" class="color2"><i class="fa fa-check fa-lg"></i> Ппроекты</a></li>
+			<li><a href="./#contacts" class="color3"><i class="fa fa-phone fa-lg"></i> Контакты</a></li>
 			<li class="navbar-text phone">+7 (495) 799-71-86</li>
 		</ul>
 	</div>
@@ -62,17 +59,21 @@
 <nav class="col-sm-3 navbar navbar-default" role="navigation" id="side-nav">
 	<div class="collapse navbar-collapse">
 		<ul class="nav navbar-nav text-effect">
-			<li><a href="/#interactive"><i class="fa fa-play-circle-o fa-li"></i> Интерактивные сайты</a></li>
-			<li><a href="/#mobile"><i class="fa fa-mobile fa-li fa-lg"></i> Мобильные приложения</a></li>
-			<li><a href="/#perf"><i class="fa fa-rocket fa-li"></i> Высоконагруженные системы</a></li>
-			<li><a href="/#mobile-versions"><i class="fa fa-tablet fa-li"></i> Мобильные версии сайтов</a></li>
-			<li><a href="/#responsive"><i class="fa fa-code fa-li"></i> Адаптивные сайты</a></li>
-			<li><a href="/#social"><i class="fa fa-vk fa-li"></i> Социальные приложения</a></li>
+			<li><a href="./#interactive"><i class="fa fa-play-circle-o fa-li"></i> Интерактивные сайты</a></li>
+			<li><a href="./#mobile"><i class="fa fa-mobile fa-li fa-lg"></i> Мобильные приложения</a></li>
+			<li><a href="./#perf"><i class="fa fa-rocket fa-li"></i> Высоконагруженные системы</a></li>
+			<li><a href="./#mobile-versions"><i class="fa fa-tablet fa-li"></i> Мобильные версии сайтов</a></li>
+			<li><a href="./#responsive"><i class="fa fa-code fa-li"></i> Адаптивные сайты</a></li>
+			<li><a href="./#social"><i class="fa fa-vk fa-li"></i> Социальные приложения</a></li>
 		</ul>
 	</div>
 </nav>
 
 <div id="page-wrapper">
+	<div id="video-bg-wrap"></div>
+	<div id="three-bg-wrap"></div>
+	<div id="sketch-bg-wrap"></div>
+	<div id="three-img-bg-wrap"></div>
 	<%- @content %>
 </div>
 <!--[if IE 8]>
@@ -84,28 +85,70 @@
 <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-<script src="/lib/video-js-4.3.0/video.js"></script>
-<script src="/lib/bigvideo-1.0.2-2/lib/bigvideo.js"></script>
-<% if @document.libTubular: %>
-	<script type="text/javascript" charset="utf-8" src="//cdn.jsdelivr.net/jquery.tubular/1.0.1/jquery.tubular.1.0.js"></script>
-<% end %>
-<% if @document.libOkVideo: %>
-	<script type="text/javascript" src="/lib/okvideo-git-20131107/okvideo.js"></script>
-<% end %>
-<% if @document.libImagesLoaded: %>
-	<script type="text/javascript" src="/lib/imagesloaded-git-20131109/imagesloaded.pkgd.min.js"></script>
-<% end %>
 <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.transit/0.9.9/jquery.transit.min.js"></script>
-<script src="/lib/nicescroll-3.4.0/jquery.nicescroll.min.js"></script>
-
-<%- @getBottom() %>
-<script src="<%- @asset('/scripts/script.js') %>"></script>
-<!--[if IE 8]>
+<script src="lib/nicescroll-3.5.4/jquery.nicescroll.min.js"></script>
+<script src="lib/parallax-git-20140111/deploy/jquery.parallax.min.js"></script>
+<script src="lib/three.js-0.0.65/three.min.js"></script>
 <script>
-	$('html').addClass('ie8');
+	if (!Function('/*@cc_on return document.documentMode===8@*/')()){
+		var js = document.createElement("script");
+		js.type = "text/javascript";
+		js.src = "lib/processing-1.4.1/processing-1.4.1.min.js";
+		document.body.appendChild(js);
+	}
 </script>
-<![endif]-->
+<script src="lib/jquery-color-git-20140121/jquery.color.js"></script>
+<script src="js/libs/tween.min.js"></script>
+<script src="js/Sparks.js"></script>
+<script src="js/loaders/BinaryLoader.js"></script>
+<script src="js/shaders/CopyShader.js"></script>
+<script src="js/shaders/FilmShader.js"></script>
+<script src="js/shaders/FocusShader.js"></script>
+<script src="js/shaders/HorizontalBlurShader.js"></script>
+<script src="js/shaders/TriangleBlurShader.js"></script>
+<script src="js/shaders/VerticalBlurShader.js"></script>
+<script src="js/postprocessing/EffectComposer.js"></script>
+<script src="js/postprocessing/RenderPass.js"></script>
+<script src="js/postprocessing/ShaderPass.js"></script>
+<script src="js/postprocessing/MaskPass.js"></script>
+<script src="js/postprocessing/BloomPass.js"></script>
+<script src="js/postprocessing/FilmPass.js"></script>
+<script src="fonts/helvetiker_regular.typeface.js"></script>
+<script src="js/shaders/ConvolutionShader.js"></script>
+<script type="x-shader/x-vertex" id="vertexshader">
+	attribute float size;
+	attribute vec3 pcolor;
+	varying vec3 vColor;
+	void main() {
+		vColor = pcolor;
+		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+		gl_PointSize = size * ( 200.0 / length( mvPosition.xyz ) );
+		gl_Position = projectionMatrix * mvPosition;
+	}
+</script>
+<script type="x-shader/x-fragment" id="fragmentshader">
+	uniform sampler2D texture;
+	varying vec3 vColor;
+	void main() {
+		vec4 outColor = texture2D( texture, gl_PointCoord );
+		gl_FragColor = outColor * vec4( vColor, 1.0 );
+	}
+</script>
+<%- @getBottom() %>
+<script src="<%- @asset('scripts/script.js') %>"></script>
+<script>
+	if (Function('/*@cc_on return document.documentMode===8@*/')()){
+		$('html').addClass('ie8');
+	}
+	if (Function('/*@cc_on return document.documentMode===9@*/')()){
+		$('html').addClass('ie9');
+	}
+	if (Function('/*@cc_on return document.documentMode===10@*/')()){
+		$('html').addClass('ie10');
+	}
+	if (Function('/*@cc_on return document.documentMode===11@*/')()){
+		$('html').addClass('ie11');
+	}
+</script>
 </body>
 </html>

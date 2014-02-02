@@ -34,7 +34,7 @@ var docpadConfig = {
 				var crypto = require('crypto');
 				var path = require('path')
 				var shasum = crypto.createHash('sha1');
-				var f = this.getFileAtPath(name);
+				var f = this.getFileAtPath('/'+name);
 				shasum.update(f.attributes.source);
 				var hash = shasum.digest('hex');
 				var srcPath = f.attributes.fullPath;
