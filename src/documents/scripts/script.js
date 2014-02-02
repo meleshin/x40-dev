@@ -1017,13 +1017,14 @@
 					html5audio.appendChild(sourceel);
 				}
 				html5audio.playclip=function(){};
-				html5audio.load(function(){
+				$(html5audio).one('canplaythrough', function(){
 					html5audio.playclip=function(){
 						html5audio.pause();
 						html5audio.currentTime=0;
 						html5audio.play();
 					}
 				});
+				html5audio.load();
 				return (function(){html5audio.playclip()});
 			}
 			else{
