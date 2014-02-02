@@ -643,7 +643,6 @@
 					clipCursor[bgWrapId]++;
 				}
 				$.cookie('last-cursor-'+bgWrapId, clipCursor[bgWrapId]);
-				console.log('clipCursor[bgWrapId]: '+clipCursor[bgWrapId]+'cookie - last-cursor-'+bgWrapId+': '+$.cookie('last-cursor-'+bgWrapId));
 				if ($views.length <= clipCur){
 					clips[clipCur].loadQ = function($view){
 						clips[clipCur].loadQ = false;
