@@ -594,9 +594,10 @@
 					threeClip();
 					threeClip();
 					threeClip();
-					threeClip();
 					threeImgClip();
 					videoClip();
+					videoClip();
+					threeImgClip();
 					threeClip();
 					videoClip();
 					threeImgClip();
