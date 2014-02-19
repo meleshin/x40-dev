@@ -1,4 +1,23 @@
 (function() { $(function() {
+	var cLang = $.cookie('lang');
+	var lang;
+	if(cLang){
+		lang = cLang
+	}else if(navigator.language){
+		lang = navigator.language.substring(0,2);
+	}else if(navigator.browserLanguage){
+		lang = navigator.browserLanguage.substring(0,2);
+	}
+	if(lang === 'ru' && location.href.indexOf('/en/')!=-1){
+		window.location.replace(location.href.replace("/en/", '/'));
+		return;
+	}else if(lang !== 'ru' && location.href.indexOf('/en/')==-1){
+		window.location.replace(location.href.replace(location.host+location.pathname, location.host+'/en'+location.pathname));
+		return;
+	}
+	$('.lang a').click(function(e){
+		$.cookie('lang', $(this).attr('data-lang'), {path: '/'});
+	});
 	$.fn.cssAn = function (prop){
 		if($.support.transition){
 			return this.css(prop);
@@ -14,7 +33,7 @@
 		}
 	}
 	var previosDocmode = $.cookie('docmode');
-	if(document.documentMode) $.cookie('docmode', document.documentMode);
+	if(document.documentMode) $.cookie('docmode', document.documentMode, {path: '/'});
 	function getModeCookie(name){
 		if(document.documentMode && document.documentMode != previosDocmode){
 			return null;
@@ -43,28 +62,15 @@
 		catch(e){ };
 		return res;
 	})();
-	var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-	var isWin = navigator.appVersion.indexOf("Win")!=-1;
-	var isWebgl = (function () {
-		try {
-			var canvas = document.createElement( 'canvas' );
-			var context = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
-			var isHWorSF = (window.WebGLRenderingContext && context) ? true : false;
-			var ext = context.getSupportedExtensions();
-			var isNotMayBeHW = isWin && isChrome && (ext.join().indexOf('compressed_texture')==-1)
-			return isHWorSF && !isNotMayBeHW;
-		} catch( e ) {
-			return false; 
-		} 
-	})();
-	var isPlayVideo = (function(){
-		var v=document.createElement('video');
-		canMP4 = v.canPlayType ? v.canPlayType('video/mp4') : false;
-		return canMP4 && (isWebgl || isIE10) && !Modernizr.touch
-	})();
-	var isParallax = Modernizr.csstransforms;
+	isWin = $('html').hasClass('win');
+	isChrome = $('html').hasClass('chrome');
+	isMobile = $('html').hasClass('mobile-device');
+	var isWebgl = $('html').hasClass('do-webgl');
+	var isPlayVideo = $('html').hasClass('play-video');
+	var isPlayAudio = $('html').hasClass('play-audio');
+	var isParallax = $('html').hasClass('parallax');
+	var docLang = $('html').attr('data-doc-lang');
 	var $scene;
-	var isProcessing = Modernizr.canvas;
 	var duration = 800;
 	var bgInClasses = ['slideInDown', 'fadeInLeft', 'slideInLeft', 'fadeInRight', 'slideInRight', 'fadeInDown', 'fadeInUp'];
 	var bgInClassCur = 0;
@@ -87,7 +93,7 @@
 			if(lc){
 				return lc;
 			}else{
-				$.cookie(name, 0);
+				$.cookie(name, 0, {path: '/'});
 				return 0;
 			}
 		}
@@ -108,12 +114,11 @@
 		if(lc){
 			return lc;
 		}else{
-			$.cookie(cookieName, 0);
+			$.cookie(cookieName, 0, {path: '/'});
 			return 0;
 		}
 	}
 	var fxCursor = getCursor('lastFxCursor');
-	var sketchCursor = getCursor('lastSketchCursor');
 	var threeCursor = getCursor('lastThreeCursor');
 	var lastHash;
 	var loadedVideo=[];
@@ -121,40 +126,106 @@
 	var filmDirect = 1;
 	var seq;
 	var videoClips = [
-			{src: "video/circ.hole_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/15533570', author: 'beeple'},
-			{src: "video/cross6_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author:'beeple'},
-			//{src: "video/newprs_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/16038839', author:'beeple'},
-			{src: "video/nodes_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/9936271', author:'beeple'},
-			{src: "video/lightgrid_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'}
-			//{src: "video/rmx_(loop)_1280x560.mp4", w: 1280, h: 560, audio: true, link: 'http://vimeo.com/79293746', author: 'beeple'}
+			{src: "/video/circ.hole_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/15533570', author: 'beeple'},
+			{src: "/video/cross6_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author:'beeple'},
+			{src: "/video/nodes_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/9936271', author:'beeple'},
+			{src: "/video/lightgrid_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'}
+			/* Also may be used:
+			{src: "/video/newprs_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/16038839', author:'beeple'},
+			{src: "/video/rmx_(loop)_1280x560.mp4", w: 1280, h: 560, audio: true, link: 'http://vimeo.com/79293746', author: 'beeple'}
+			*/
 		];
-	var sketchClips = [
-			/*{src: "images/bg/black-crystal.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
-			{src: "images/bg/bubbles.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
-			{src: "images/bg/coffe.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
-			{src: "images/bg/spheres.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},*/
-			{src: "video/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "video/cross6_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "video/lightgrid_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "video/cross6_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "video/lightgrid_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "video/cross6_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "video/lightgrid_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "video/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}/*,
-			{src: "images/bg/traffic-1600x1061.jpg", w: 1600, h: 1061, link: 'http://www.flickr.com/photos/yakobusan/3566287076/in/set-72157622430175923', author: 'Jakob Montrasio'},
-			{src: "images/bg/android-1920x1274.jpg", w: 1920, h: 1274, link: 'http://www.flickr.com/photos/peyotll/8378484980/', author: 'Benjamin Lefebvre'},
-			{src: "images/bg/shanghai-1920x1279.jpg", w: 1920, h: 1279, link: 'http://www.flickr.com/photos/yakobusan/3986658544/in/set-72157622430175923', author: 'Jakob Montrasio'}*/
+	var sketchClips = isMobile ? (
+			$(window).width() <= 640 ? [
+				{src: "/video/lightgrid_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+				{src: "/video/cross6_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			] : [
+				{src: "/video/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+				{src: "/video/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
+			]
+		) : [
+			{src: "/video/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/video/cross6_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/video/lightgrid_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/video/cross6_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/video/lightgrid_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/video/cross6_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/video/lightgrid_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/video/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
+			/* Also may be used:
+			{src: "/images/bg/black-crystal.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
+			{src: "/images/bg/bubbles.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
+			{src: "/images/bg/coffe.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
+			{src: "/images/bg/spheres.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
+			{src: "/images/bg/traffic-1600x1061.jpg", w: 1600, h: 1061, link: 'http://www.flickr.com/photos/yakobusan/3566287076/in/set-72157622430175923', author: 'Jakob Montrasio'},
+			{src: "/images/bg/android-1920x1274.jpg", w: 1920, h: 1274, link: 'http://www.flickr.com/photos/peyotll/8378484980/', author: 'Benjamin Lefebvre'},
+			{src: "/images/bg/shanghai-1920x1279.jpg", w: 1920, h: 1279, link: 'http://www.flickr.com/photos/yakobusan/3986658544/in/set-72157622430175923', author: 'Jakob Montrasio'}
+			*/
 		];
 	var threeImgClips = [
-			{src: "images/bg/traffic-1600x1061.jpg", w: 1600, h: 1061, link: 'http://www.flickr.com/photos/yakobusan/3566287076/in/set-72157622430175923', author: 'Jakob Montrasio'},
-			{src: "images/bg/android-1920x1274.jpg", w: 1920, h: 1274, link: 'http://www.flickr.com/photos/peyotll/8378484980/', author: 'Benjamin Lefebvre'},
-			{src: "images/bg/shanghai-1920x1279.jpg", w: 1920, h: 1279, link: 'http://www.flickr.com/photos/yakobusan/3986658544/in/set-72157622430175923', author: 'Jakob Montrasio'}
+			{src: "/images/bg/traffic-1600x1061.jpg", w: 1600, h: 1061, link: 'http://www.flickr.com/photos/yakobusan/3566287076/in/set-72157622430175923', author: 'Jakob Montrasio'},
+			{src: "/images/bg/android-1920x1274.jpg", w: 1920, h: 1274, link: 'http://www.flickr.com/photos/peyotll/8378484980/', author: 'Benjamin Lefebvre'},
+			{src: "/images/bg/shanghai-1920x1279.jpg", w: 1920, h: 1279, link: 'http://www.flickr.com/photos/yakobusan/3986658544/in/set-72157622430175923', author: 'Jakob Montrasio'}
 		]
-	var sketches = [
-		{src: "pde/hello-processing.pde"},
-		{src: "pde/swarming-circles.pde"},
-		{src: "pde/motion-frequency.pde"}
-	];
+	var boomSnd = snd([
+			["/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.ogg","/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.mp3"],
+			["/audio/boom/199526__unfa__a-whole-cd-in-4-seconds-sci-fi-computer-working.ogg","/audio/boom/199526__unfa__a-whole-cd-in-4-seconds-sci-fi-computer-working.mp3"],
+			["/audio/boom/93848__robinhood76__01551-low-boom.ogg","/audio/boom/93848__robinhood76__01551-low-boom.mp3"],
+			["/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.ogg","/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.mp3"],
+			["/audio/boom/93848__robinhood76__01551-low-boom.ogg","/audio/boom/93848__robinhood76__01551-low-boom.mp3"],
+			["/audio/boom/93848__robinhood76__01551-low-boom.ogg","/audio/boom/93848__robinhood76__01551-low-boom.mp3"],
+			["/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.ogg","/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.mp3"],
+			["/audio/boom/93848__robinhood76__01551-low-boom.ogg","/audio/boom/93848__robinhood76__01551-low-boom.mp3"],
+			["/audio/boom/199526__unfa__a-whole-cd-in-4-seconds-sci-fi-computer-working.ogg","/audio/boom/199526__unfa__a-whole-cd-in-4-seconds-sci-fi-computer-working.mp3"],
+			["/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.ogg","/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.mp3"],
+			["/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.ogg","/audio/boom/195790__klankbeeld__cinematic-boom-130730-06.mp3"],
+			/* Also may be used:
+			["/audio/boom/86263__joelaudio__bass-boom-001.ogg","/audio/boom/86263__joelaudio__bass-boom-001.mp3"],
+			["/audio/boom/116678__puniho__stretched-canvas-bass-drum.ogg","/audio/boom/116678__puniho__stretched-canvas-bass-drum.mp3"],
+			["/audio/boom/120955__zimbot__explosionbombblastdistantmuffled-likecinematicboom-2.ogg","/audio/boom/120955__zimbot__explosionbombblastdistantmuffled-likecinematicboom-2.mp3"],
+			*/
+		]);
+	var clickSnd = snd([
+			["/audio/click/213148__radiy__click.mp3", "/audio/click/213148__radiy__click.ogg"]
+			/* Also may be used:
+			["/audio/click/198398__ani-music__ani-spoons-slap-2a.ogg", "/audio/click/198398__ani-music__ani-spoons-slap-2a.mp3"],
+			["/audio/click/145459__soughtaftersounds__menu-click-sparkle.mp3", "/audio/click/145459__soughtaftersounds__menu-click-sparkle.ogg"],
+			["/audio/click/49213__tombola__fisher-price29.ogg", "/audio/click/49213__tombola__fisher-price29.mp3"],
+			["/audio/click/25260__suonho__deconstruction-set-wet.ogg", "/audio/click/25260__suonho__deconstruction-set-wet.mp3"],
+			["/audio/click/195102__punpcklbw__3.mp3", "/audio/click/195102__punpcklbw__3.ogg"],
+			["/audio/click/406__tictacshutup__click-1-d.mp3", "/audio/click/406__tictacshutup__click-1-d.ogg"],
+			["/audio/click/145444__soughtaftersounds__menu-click-wet.mp3", "/audio/click/145444__soughtaftersounds__menu-click-wet.ogg"],
+			*/
+		]);
+	var enterSnd = snd([
+			
+			["/audio/swipe/48185__rwm28__digitalhum1.ogg", "/audio/swipe/48185__rwm28__digitalhum1.mp3"],
+			/* Also may be used:
+			["/audio/swipe/128155__killpineapple__bagoverhead.ogg", "/audio/swipe/128155__killpineapple__bagoverhead.mp3"],
+			["/audio/swipe/176166__caboose3146__swipe1.ogg", "/audio/swipe/176166__caboose3146__swipe1.mp3"],
+			["/audio/swipe/127764__149203__hammer-14-16bit.ogg", "/audio/swipe/127764__149203__hammer-14-16bit.mp3"],
+			["/audio/swipe/155548__bigkahuna360__mouse-scroll-1.ogg", "/audio/swipe/155548__bigkahuna360__mouse-scroll-1.mp3"],
+			["/audio/swipe/187341__baidonovan__unlocking-door-with-key.ogg", "/audio/swipe/.mp3"],
+			["/audio/swipe/209378__coffeeflan__chains-5swipe.ogg", "/audio/swipe/209378__coffeeflan__chains-5swipe.mp3"],
+			["/audio/swipe/25412__andrewweathers__magnet-swipe.ogg", "/audio/swipe/25412__andrewweathers__magnet-swipe.mp3"],
+			["/audio/swipe/73262__junggle__whoosh-dark-hissy.ogg", "/audio/swipe/73262__junggle__whoosh-dark-hissy.mp3"],
+			["/audio/swipe/27765__lg__noise12.ogg", "/audio/swipe/27765__lg__noise12.mp3"]
+			*/
+		]);
+	var windSnd = snd([
+			["/audio/wind/148331__shapeshifter242__quiet.ogg", "/audio/wind/148331__shapeshifter242__quiet.mp3"],
+			["/audio/wind/158398__kennysvoice__wipenthump.ogg", "/audio/wind/158398__kennysvoice__wipenthump.mp3"],
+			["/audio/wind/77080__dj-chronos__giant-wing-flap-5.ogg", "/audio/wind/77080__dj-chronos__giant-wing-flap-5.mp3"],
+			["/audio/wind/30328__erh__radio-click-2.ogg", "/audio/wind/30328__erh__radio-click-2.mp3"],
+			["/audio/wind/64054__obct__b00-120.ogg", "/audio/wind/64054__obct__b00-120.mp3"],
+			/* Also may be used:
+			["/audio/wind/7601__noisecollector__hackeysacklarry5.ogg", "/audio/wind/7601__noisecollector__hackeysacklarry5.mp3"],
+			["/audio/wind/9762__a43__a43-plugs-1.ogg", "/audio/wind/9762__a43__a43-plugs-1.mp3"],
+			["/audio/wind/175199__minigunfiend__chill-scratch-harmonics.ogg", "/audio/wind/175199__minigunfiend__chill-scratch-harmonics.mp3"],
+			["/audio/wind/178808__erokia__sample-2.ogg", "/audio/wind/178808__erokia__sample-2.mp3"],
+			["/audio/wind/161437__mrcisum__fly-by-woosh.ogg", "/audio/wind/161437__mrcisum__fly-by-woosh.mp3"],
+			*/
+		]);
 	var threeBgs = (function(){
 		if(isWebgl){
 			if(!isIE){
@@ -174,7 +245,7 @@
 			return null;
 		}
 	})();
-	var moveFx = new (function(){
+	var moveFx = (!isParallax || isMobile) ? null : new (function(){
 		var $root = $('<div id="move-fx"></div>');
 		$root.css({
 			position: 'absolute',
@@ -255,14 +326,14 @@
 			$('#move-fx .bar').css({opacity: '0'});
 		}
 	})();
+	opacityFix();
 	design();
-	audio();
+	if(isPlayAudio) audio();
 	projects();
 	loadClip(sketchClips, 'sketch-bg-wrap');
 	if(isWebgl) loadClip(threeImgClips, 'three-img-bg-wrap');
 	if(isPlayVideo) loadClip(videoClips, 'video-bg-wrap');
 	navigation();
-	opacityFix();
 	function loadClip(clips, bgWrapId){
 		var typeIsVideo = bgWrapId == 'video-bg-wrap' ? true : false;
 		var $loaded = typeIsVideo ? $('#'+bgWrapId+' .video-bg>video') : $('#'+bgWrapId+' .img-bg>img');
@@ -294,7 +365,7 @@
 			$(window).on('resize', function(){$bg.css(bgCss());});
 			var $view;
 			if(typeIsVideo){
-				$view = $('<video class="bg" webkit-playsinline loop"></video>');
+				$view = $('<video class="bg" webkit-playsinline loop></video>');
 				$view[0].muted = clip.audio ? false : true;
 			}else{
 				$view = $('<img class="bg" />');
@@ -303,7 +374,7 @@
 				loadedClips[bgWrapId] = loadedClips[bgWrapId] === undefined ? 0 : loadedClips[bgWrapId]+1;
 				if(maxLoadedClips[bgWrapId] === undefined || maxLoadedClips[bgWrapId] === null || maxLoadedClips[bgWrapId] === '' || loadedClips[bgWrapId] > maxLoadedClips[bgWrapId]) {
 					maxLoadedClips[bgWrapId] = loadedClips[bgWrapId];
-					$.cookie('max-loaded-'+bgWrapId, maxLoadedClips[bgWrapId])
+					$.cookie('max-loaded-'+bgWrapId, maxLoadedClips[bgWrapId], {path: '/'})
 				}
 				$view.appendTo($bg);
 				if(clip.loadQ){
@@ -318,16 +389,6 @@
 			}
 			$view[0].src = clip.src;
 			if(typeIsVideo) $view[0].load();
-		}
-	}
-	function sketchExec(id, func){
-		if(isProcessing){
-			var pi = Processing.getInstanceById(id);
-			if(pi){
-				func(pi);
-			}else{
-				setTimeout(function(){sketchExec(id, func)}, 100);
-			}
 		}
 	}
 	/*function moveBlack(rollback){
@@ -346,47 +407,39 @@
 		if(!rollback){
 			var $paper = $(lastHash+' .page-paper');
 			$paper.addClass('move-out');
-			$paper.cssAnOnly({'background-color': 'rgba(0, 0, 0, 0)'});
+			$paper.cssAnOnly({'background-color': $.Color({ alpha: 0 })});
 		}else{
 			$('.page-paper.move-out').cssAnOnly({'background-color':''}).removeClass('move-out');
 		}
 	}
 	function design(){
+		var collapsed = true;
 		var collapseHide = function(){
-			$('.navbar-collapse.in, #side-padding.in').collapse('hide');
-			$('#side-padding').css("height","");
+			$('.navbar-collapse.in').collapse('hide');
+			$('.page-paper').css({overflow: 'auto'});
+			collapsed = true;
 		}
-		$('.navbar-collapse').click('li', collapseHide);
+		$('.navbar-collapse li a').click(collapseHide);
 		$(window).on('resize', function(){
-			collapseHide();
-			if(isProcessing){
-				$('.in .sketch').each(function(){
-					sketchExec(this.id, function(pi){
-						var $p = $(lastHash+" .page-paper");
-						pi.size($p.width(), $p.height());
-					});
-				});
+			if($(window).width()>767){
+				collapseHide();
+			}
+		});
+		$('#top-nav .navbar-toggle').click(function(){
+			if(collapsed){
+				$('.page-paper').css({overflow: 'hidden'});
+				collapsed = false;
+			}else{
+				$('.page-paper').css({overflow: 'auto'});
+				collapsed = true;
 			}
 		});
 		var $page = $(".page");
 		$page.wrapInner('<div class="col-sm-9 page-content"></div>');
-		$('<div class="col-sm-3 right"><div class="bg-author"></div></div>').appendTo($page);
-		$page.wrapInner('<div class="page-paper"></div>');
+		//$('<div class="col-sm-3 right"></div>').appendTo($page);
+		$page.wrapInner('<div class="page-paper'+(isMobile ? '' : ' scrollbar')+'"></div>');
 		$('<div class="film1"></div>').insertBefore($('.page-paper'));
-		$('<div class="film2"></div>').insertAfter($('.page-paper'));
-		$('.page-paper').scroll(function(){
-			//var fPoz = Math.round($(this).scrollTop()/2);
-			//$('.film1, .film2').css("background-position","-"+fPoz+"px 0");
-			var scr = Math.round($(this).scrollTop()/4);
-			var r = Math.abs( (0+180+scr)%360-180 );
-			var g = Math.abs( (180+180+scr)%360-180 );
-			var b = Math.abs( (120+180+scr)%360-180 );
-			if(Modernizr.opacity){
-				$("#side-nav").css({'background-color': 'rgba('+r+', '+g+', '+b+', 0.7)'});
-			}else{
-				$("#side-nav").css({'background-color': 'rgb('+r+', '+g+', '+b+')'});
-			}
-		});
+		$('<div class="film2"><div class="bg-author"></div></div>').insertAfter($('.page-paper'));
 		$('#side-nav a, #top-nav ul a').each(function(){
 			$(this).attr('data-hover',$(this).text());
 		});
@@ -404,26 +457,28 @@
 		var isMoveOut = false;
 		var moveTimeout;
 		var lastMoveHash;
-		$(window).mousemove(function(e){
-			var rollback = function(){
-				var rollbackTimeout = 500;
-				var currentTime = (new Date()).getTime();
-				if(currentTime - lastMove > rollbackTimeout){
-					moveFunc(true);
-					isMoveOut = false;
-				}else{
-					if(moveTimeout) clearTimeout(moveTimeout);
-					moveTimeout = setTimeout(rollback, rollbackTimeout);
+		if(!isMobile){
+			$(window).mousemove(function(e){
+				var rollback = function(){
+					var rollbackTimeout = 500;
+					var currentTime = (new Date()).getTime();
+					if(currentTime - lastMove > rollbackTimeout){
+						moveFunc(true);
+						isMoveOut = false;
+					}else{
+						if(moveTimeout) clearTimeout(moveTimeout);
+						moveTimeout = setTimeout(rollback, rollbackTimeout);
+					}
 				}
-			}
-			if(!isMoveOut || lastMoveHash != lastHash){
-				isMoveOut = true;
-				moveFunc();
-				rollback();
-			}
-			lastMove = (new Date()).getTime();
-			lastMoveHash = lastHash;
-		});
+				if(!isMoveOut || lastMoveHash != lastHash){
+					isMoveOut = true;
+					moveFunc();
+					rollback();
+				}
+				lastMove = (new Date()).getTime();
+				lastMoveHash = lastHash;
+			});
+		}
 	}
 	function navigation(){
 		var isOff = false;
@@ -466,7 +521,6 @@
 					e.preventDefault();
 				} else {
 					var url = this.href;
-					//$('body').css({"background-image": "url(/images/fuzz.gif)"});
 					if(Modernizr.cssanimations){
 						$('.page.in, .bg.in, #move-fx').one(transitionEnd, function(){window.location.href = url;});
 						$('.page.in, .bg.in, #move-fx').css({top: '100%'});
@@ -514,7 +568,6 @@
 			}
 		});
 		function nav(locationOrA){
-			//$('body').css({"background-image": "none"});
 			var hash = locationOrA.hash;
 			if(!hash || hash == '#'){
 				hash = '#index';
@@ -523,9 +576,8 @@
 			}
 			lastHash = hash;
 			var $hash = $(hash);
-			if($hash.length < 1/* || $hash.hasClass("in") || $hash.hasClass("sf-in")*/) return;
+			if($hash.length < 1) return;
 			if($(".page.in").length > 0){
-				//$("nav").css({"background-image": "url(/images/fuzz.gif)"});
 				$('#side-nav a').css("color",'#FF7D8D');
 				if(Modernizr.opacity){
 					$sideNav.cssAn({"background-color": "rgba(0, 0, 0, 0.7)"});
@@ -582,45 +634,7 @@
 			}else{
 				fxCursor = 0;
 			}
-			$.cookie('lastFxCursor', fxCursor);
-			function sketch (){
-				if(!isProcessing) return;
-				$('.sketch').each(function(){
-						var me = this;
-						sketchExec(this.id, function(pi){
-							pi.noLoop();
-							$(me).css({visibility: "hidden"});
-						});
-					});
-				var src=sketches[sketchCursor].src;
-				//var setup=sketches[sketchCursor].setup;
-				var id = src.replace('/','-').replace('.','-')+'-'+sketchCursor;
-				var $canv;
-				if($('#'+id).length === 0){
-					var $canv = $('<canvas id="'+id+'" class="sketch" tabindex="0"></canvas>')
-					$(hash+" .page-content").prepend($canv);
-					Processing.loadSketchFromSources(id, [src]);
-					sketchExec(id, function(pi){
-						$canv.cssAn({'opacity': 1});
-					});
-				}else{
-					var $s = $('#'+id);
-					$s.detach();
-					$(hash+" .page-content").prepend($s);
-					sketchExec(id, function(pi){
-						var $p = $(hash+" .page-paper");
-						pi.size($p.width(), $p.height());
-						$s.css({visibility: "visible"}).cssAn({opacity: 1});
-						pi.loop();
-					});
-				}
-				if(sketchCursor<(sketches.length-1)){
-					sketchCursor++;
-				}else{
-					sketchCursor = 0;
-				}
-				$.cookie('lastSketchCursor', sketchCursor);
-			}
+			$.cookie('lastFxCursor', fxCursor, {path: '/'});
 			function threeBg (){
 				var bg = threeBgs[threeCursor];
 				if(threeCursor<(threeBgs.length-1)){
@@ -628,7 +642,7 @@
 				}else{
 					threeCursor = 0;
 				}
-				$.cookie('lastThreeCursor', threeCursor);
+				$.cookie('lastThreeCursor', threeCursor, {path: '/'});
 				moveFunc = moveClear;
 				bg.start();
 				return bg;
@@ -642,7 +656,7 @@
 				}else{
 					clipCursor[bgWrapId]++;
 				}
-				$.cookie('last-cursor-'+bgWrapId, clipCursor[bgWrapId]);
+				$.cookie('last-cursor-'+bgWrapId, clipCursor[bgWrapId], {path: '/'});
 				if ($views.length <= clipCur){
 					clips[clipCur].loadQ = function($view){
 						clips[clipCur].loadQ = false;
@@ -666,17 +680,9 @@
 					for(var i = 0; i < threeImgClips.length; i++){
 						if(threeImgClips[i].fx) threeImgClips[i].fx.stop();
 					}
+					$('.page-paper').removeClass('black-bg');
 				}
-				if(isProcessing){
-					$('.sketch').each(function(){
-						var me = this;
-						sketchExec(this.id, function(pi){
-							pi.noLoop();
-							$(me).css({opacity: 0});
-						});
-					});
-				}
-				moveFx.stop();
+				if(moveFx) moveFx.stop();
 				if(isParallax) $scene.parallax('disable');
 			}
 			function pgOut(){
@@ -699,7 +705,8 @@
 					$('.page.in').each(function(){
 						var $t = $(this);
 						if('#'+$t.attr('id') != lastHash){
-							$t.removeClass('in '+pgInClasses.join(' ')).addClass('out').animate({left: '-'+($(window).width()+5)+'px'}, duration);
+							$t.removeClass('in '+pgInClasses.join(' ')).addClass('out')
+								.animate({left: '-'+($(window).width()+5)+'px'}, duration, function(){$t.css({visibility: 'hidden'})});
 						}
 					});
 				}
@@ -719,11 +726,13 @@
 				}else{
 					$('.bg.in').each(function(){
 						var $t = $(this);
-						$(this).removeClass('in').addClass('out').animate({top: '-100%'}, duration)
+						$(this).removeClass('in').addClass('out').animate({top: '-100%'}, duration);
 					});
 				}
 			}
 			function bgOver($bg, callback){
+				windSnd();
+				boomSnd();
 				$('#loading').css({display: 'none'});
 				if(Modernizr.cssanimations){
 					var bgInClass = (function (){
@@ -760,23 +769,15 @@
 					}
 				}
 				function after(){
-					$('.page.in .bg-author').empty();
 					if (callback) callback();
 				}
 			}
 			function pageOver($pg, $bg, callback){
-				/*$('.video-bg video').each(function(){
-					this.currentTime = 0;
-				});*/
 				$('#side-nav a').css("color","");
 				if(Modernizr.opacity){
 					$(hash+' .page-paper').cssAnOnly({'background-color': ''});
 					$sideNav.cssAn({"background-color": sideNavBgColor});
 				}
-				$(".page-paper").each(function(){
-					var s = $(this).getNiceScroll(0);
-					if (s) s.hide();
-				});
 				if(Modernizr.cssanimations){
 					var pgInClass = (function (){
 						var i = pgInClassCur < pgInClasses.length - 1 ? pgInClassCur+1 : 0;
@@ -796,7 +797,7 @@
 					$pg.addClass('animated '+pgInClass);
 				}else{
 					$pg.removeClass('out').addClass('over in');
-					$pg.css({left: '-100%'});
+					$pg.css({left: '-100%', visibility: 'visible'});
 					$pg.animate({left: '0'}, duration, after);
 				}
 				function after(){
@@ -804,7 +805,7 @@
 					$pg.removeClass('over');
 					$pg.find('.page-box').removeClass(boxInClass);
 					if('#'+$pg.attr('id') == lastHash){
-						if($.support.transition){
+						if($.support.transition && !isMobile){
 							var $film = $(hash+' .film1, '+hash+' .film2');
 							var bgpos = $film.css("background-position");
 							var xpos;
@@ -818,20 +819,19 @@
 							setTimeout(function(){$film.css({"background-position": newXpos+"px"+" 0"});}, 100);
 						}
 						var $p = $(hash+" .page-paper");
-						var s = $p.getNiceScroll(0);
-						if(s){
-							s.show();
-						}else{
-							$p.niceScroll({zindex: 100000, autohidemode: true, horizrailenabled: false, cursoropacitymin: 0.6, cursoropacitymax: 1, background: "transparent", cursorborder: '1px solid #fff', cursorwidth: '8px', cursorcolor: 'rgb(200, 0, 0)'});
-								//if background not transparent then right side of page flashes after showing
-							$(hash+' .nicescroll-rails').detach().appendTo('body');	
-						}
 						$("a").each(function() {
-							$(this).parents('li').removeClass("active");
-							$(this).removeClass("active");
-							if(this.href == locationOrA.href || (this.href + '#') == locationOrA.href){
-								$(this).parents('li').addClass("active");
-								$(this).addClass("active");
+							$t = $(this);
+							$pli = $t.parents('li');
+							$pli.removeClass("active");
+							$t.removeClass("active");
+							if($pli.hasClass('lang')){
+								if($t.attr('data-lang') == docLang){
+									$t.parents('li').addClass("active");
+									$t.addClass("active");
+								}
+							}else if(this.href == locationOrA.href || (this.href + '#') == locationOrA.href){
+								$t.parents('li').addClass("active");
+								$t.addClass("active");
 							}
 						});
 						if(seq) seq.startAutoPlay();
@@ -850,8 +850,12 @@
 					}
 					var $bg = $(clip.fx.container);
 					clip.fx.start();
+					if(clip.link && clip.author) {
+						$(hash+' .bg-author').text('Фото: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+					}else{
+						$(hash+' .bg-author').empty();
+					}
 					bgOver($bg, function(){
-						if(clip.link && clip.author) $(hash+' .bg-author').text('Фото: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 						pageOver($hash, $bg);
 					});
 				});
@@ -862,11 +866,15 @@
 				var bgWrapId = 'video-bg-wrap';
 				bgView(bgWrapId, videoClips, function($video, ind){
 					var clip = videoClips[ind];
+					if(clip.link && clip.author){
+						$(hash+' .bg-author').text('Видео: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+					}else{
+						$(hash+' .bg-author').empty();
+					}
 					bgOver($video, function(){
-						if(clip.link && clip.author) $(hash+' .bg-author').text('Видео: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 						pageOver($hash, $video, function(){
 							$video[0].play();
-							moveFx.start();
+							if(moveFx) moveFx.start();
 						});
 					});
 				});
@@ -875,7 +883,11 @@
 				preProcessor();
 				var t = threeBg();
 				var $bg = $(t.container);
+				$(hash+' .bg-author').empty();
 				bgOver($bg, function(){
+					if(t.paperClass){
+						$hash.find('.page-paper').addClass(t.paperClass);
+					}
 					pageOver($hash, $bg);
 				});
 			}
@@ -885,10 +897,14 @@
 				var bgWrapId = 'sketch-bg-wrap';
 				bgView(bgWrapId, sketchClips, function($img, ind){
 					var clip = sketchClips[ind];
+					if(clip.link && clip.author){
+						$(hash+' .bg-author').text('Фон: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+					}else{
+						$(hash+' .bg-author').empty();
+					}
 					bgOver($img, function(){
-						if(clip.link && clip.author) $(hash+' .bg-author').text('Фон: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 						pageOver($hash, $img, function(){
-							sketch();
+							if(moveFx) moveFx.start();
 						});
 					});
 				});
@@ -903,23 +919,24 @@
 				prevButton: true,
 				pagination: true,
 				animateStartingFrameIn: true,
-				autoPlay: true,
-				pauseOnHover: false,
-				autoPlayDelay: 3000,
-				preloader: true,
-				preloadTheseFrames: [1],
-				preloadTheseImages: [
-					"images/newbigjob-t.png",
-					"images/newbigjob-m-t.png",
-					"images/mobivisor-t.png",
-					"images/surwave-t.png",
-					"images/surwave-m-t.png",
-					"images/vreggy-t.png",
-					"images/sigmahome-t.png",
-					"images/hitechhow-t.png",
-					"images/hth-crm-t.png",
-					"images/frescostudio-t.png"
-				]
+				autoPlay: isMobile ? false : true,
+				pauseOnHover: true,
+				autoPlayDelay:  3000,
+				preloader: isMobile ? false : true,
+				preloadTheseFrames: isMobile ? undefined : [1],
+				/*preloadTheseImages: [
+					"/images/mobivisor.png",
+					"/images/newbigjob-t.png",
+					"/images/newbigjob-m-t.png",
+					"/images/mobivisor-t.png",
+					"/images/surwave-t.png",
+					"/images/surwave-m-t.png",
+					"/images/vreggy-t.png",
+					"/images/sigmahome-t.png",
+					"/images/hitechhow-t.png",
+					"/images/hth-crm-t.png",
+					"/images/frescostudio-t.png"
+				]*/
 			};
 			var setImg = function(){
 				$('#sequence>.sequence-canvas div[data-img]').each(function(){
@@ -927,7 +944,7 @@
 					var src = $d.attr('data-img');
 					var windowW = $(window).width();
 					var windowH = $(window).height();
-					if(Modernizr.mq('only all')){
+					if(Modernizr.mq('only all') && !isMobile){
 						if(windowW<=580 || windowH<=602){
 							src = src.replace('.png','-c.png');
 						}else if(windowW<=925 || windowH<=695){
@@ -965,10 +982,9 @@
 			var opacityes = [
 				['#top-nav', 70],
 				['#top-nav .navbar-toggle', 80],
-				['#top-nav .navbar-toggle:focus', 20],
 				['#top-nav li.navbar-text', 80],
 				['#side-nav', 70],
-				['.page-paper', 70],
+				['.page-paper', 85],
 				['.page-content i', 72],
 				['#off-bg i', 20],
 				['.center-menu, .page-box', 70],
@@ -983,54 +999,52 @@
 			$head.append($(style));
 		}
 	}
-	function audio(){
-		//$('a').click(snd("audio/click.ogg", "audio/click.mp3"));
-		//$('a').mouseenter(snd("audio/whistle.ogg", "audio/whistle.mp3"));
-		//$('a').click(snd("audio/swipe/155548__bigkahuna360__mouse-scroll-1.wav"));
-		//$('a:not(.muted)').click(snd("audio/click/145444__soughtaftersounds__menu-click-wet.mp3"));
-		//$('a:not(.muted)').click(snd("audio/click/48609__nirmatara__click1-long.wav"));
-		//$('a:not(.muted)').click(snd("audio/click/145459__soughtaftersounds__menu-click-sparkle.mp3"));
-		
-		//$('a:not(.muted)').click(snd("audio/click/213148__radiy__click.wav"));
-		//$('a:not(.muted)').click(snd("audio/click/198394__ani-music__ani-spoons-clicked-1a.wav"));
-		$('a:not(.muted)').click(snd("audio/click/198398__ani-music__ani-spoons-slap-2a.ogg", "audio/click/198398__ani-music__ani-spoons-slap-2a.mp3", "audio/click/198398__ani-music__ani-spoons-slap-2a.wav"));
-		
-		//$('a').mouseenter(snd("audio/swipe/176166__caboose3146__swipe1.wav"));
-		//$('a').mouseenter(snd("audio/swipe/127764__149203__hammer-14-16bit.wav"));
-		//$('a').mouseenter(snd("audio/swipe/96150__bmaczero__singlewind2.wav"));
-		$('a:not(.muted)').mouseenter(snd("audio/swipe/48185__rwm28__digitalhum1.ogg", "audio/swipe/48185__rwm28__digitalhum1.mp3", "audio/swipe/48185__rwm28__digitalhum1.wav"));
-		
-		function snd(sound){
-			var html5_audiotypes={
-				"mp3": "audio/mpeg",
-				"mp4": "audio/mp4",
-				"ogg": "audio/ogg",
-				"wav": "audio/wav"
-			};
-			var html5audio=document.createElement('audio');
-			if (html5audio.canPlayType){
-				for (var i=0; i<arguments.length; i++){
+	function snd(sounds){
+		if (!isPlayAudio) return function(){};
+		var html5_audiotypes={
+			"mp3": "audio/mpeg",
+			"mp4": "audio/mp4",
+			"ogg": "audio/ogg",
+			"wav": "audio/wav"
+		};
+		var html5audios = [];
+		var load = function(){
+			var i = html5audios.length;
+			if(i < sounds.length){
+				var html5audio=document.createElement('audio');
+				$(html5audio).one('canplaythrough', function(){
+					html5audios.push(this);
+					load();
+				});
+				var sources = sounds[i];
+				for (var j=0; j<sources.length; j++){
 					var sourceel=document.createElement('source');
-					sourceel.setAttribute('src', arguments[i]);
-					if (arguments[i].match(/\.(\w+)$/i))
+					sourceel.setAttribute('src', sources[j]);
+					if (sources[j].match(/\.(\w+)$/i))
 						sourceel.setAttribute('type', html5_audiotypes[RegExp.$1]);
 					html5audio.appendChild(sourceel);
 				}
-				html5audio.playclip=function(){};
-				$(html5audio).one('canplaythrough', function(){
-					html5audio.playclip=function(){
-						html5audio.pause();
-						html5audio.currentTime=0;
-						html5audio.play();
-					}
-				});
 				html5audio.load();
-				return (function(){html5audio.playclip()});
-			}
-			else{
-				return (function(){});
 			}
 		}
+		load();
+		var cursor = 0;
+		return function(){
+			if(!html5audios[cursor]){
+				return;
+			}else{
+				var audio = html5audios[cursor];
+				cursor = cursor < html5audios.length - 1 ? cursor+1 : 0;
+				audio.pause();
+				audio.currentTime=0;
+				audio.play();
+			}
+		}
+	}
+	function audio(){
+		if (!isPlayAudio) return;
+		$('a:not(.muted)').click(clickSnd);
+		$('a:not(.muted)').mouseenter(enterSnd);
 	}
 	function ThreeCubemapBalls(){
 		// Code from three.js examples (https://github.com/mrdoob/three.js/blob/master/examples/webgl_materials_cubemap_balls_refraction.html).
@@ -1058,13 +1072,13 @@
 		scene = new THREE.Scene();
 		sceneCube = new THREE.Scene();
 		var geometry = new THREE.SphereGeometry( 100, 32, 16 );
-		//var path = "textures/cube/skybox/";
-		var path = "textures/cube/skybox-blue/";
-		//var path = "textures/vasa/";
-		//var path = "textures/dallasw/";
-		//var path = "textures/parliament/";
-		//var path = "textures/hornstullsstand/";
-		//var path = "textures/shwedish-royal-castle/";
+		//var path = "/textures/cube/skybox/";
+		var path = "/textures/cube/skybox-blue/";
+		//var path = "/textures/vasa/";
+		//var path = "/textures/dallasw/";
+		//var path = "/textures/parliament/";
+		//var path = "/textures/hornstullsstand/";
+		//var path = "/textures/shwedish-royal-castle/";
 		var format = '.jpg';
 		var urls = [
 			path + 'px' + format, path + 'nx' + format,
@@ -1155,6 +1169,7 @@
 		var windowHalfX = window.innerWidth / 2;
 		var windowHalfY = window.innerHeight / 2;
 		var loop;
+		this.paperClass = 'black-bg';
 		//container = document.createElement( 'div' );
 		//document.body.appendChild( container );
 		this.container = document.createElement( 'div' );
@@ -1165,7 +1180,7 @@
 		scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0x000000, 0.001 );
 		geometry = new THREE.Geometry();
-		sprite = THREE.ImageUtils.loadTexture( "textures/sprites/disc.png" );
+		sprite = THREE.ImageUtils.loadTexture( "/textures/sprites/disc.png" );
 		for ( i = 0; i < 10000; i ++ ) {
 			var vertex = new THREE.Vector3();
 			vertex.x = 2000 * Math.random() - 1000;
@@ -1254,6 +1269,7 @@
 		var composer;
 		var effectBlurX, effectBlurY, hblur, vblur;
 		var loop;
+		this.paperClass = 'black-bg';
 		this.container = document.createElement( 'div' );
 		//document.body.appendChild( container );
 		$(this.container).addClass('bg three');
@@ -1781,6 +1797,7 @@
 		var windowHalfX = window.innerWidth / 2;
 		var windowHalfY = window.innerHeight / 2;
 		var loop;
+		this.paperClass = 'black-bg';
 		//container = document.createElement( 'div' );
 		//document.body.appendChild( container );
 		this.container = document.createElement( 'div' );
@@ -1796,7 +1813,7 @@
 		aloader = new THREE.JSONLoader( );
 		bloader = new THREE.BinaryLoader( true );
 		//document.body.appendChild( bloader.statusDomElement );
-		aloader.load( "obj/terrain.js", function( geometry ) {
+		aloader.load( "/obj/terrain.js", function( geometry ) {
 			createMesh( geometry, scene, 16.8, -11000, -200,  -5000, 0x00ff44, false );
 			createMesh( geometry, scene, 16.8,  11000, -200, -15000, 0x00ff33, false );
 			createMesh( geometry, scene, 16.8,      0, -200, -15000, 0x00ff33, false );
@@ -1806,15 +1823,15 @@
 			createMesh( geometry, scene, 16.8,  13000, -200,   5000, 0x00ff55, false );
 			createMesh( geometry, scene, 16.8,  13000, -200,  -5000, 0x00ff66, false );
 		} );
-		bloader.load( "obj/veyron/VeyronNoUv_bin.js", function( geometry ) { createMesh( geometry, scene, 6.8, 2200, -200, -100, 0x0055ff, false ) } );
-		bloader.load( "obj/female02/Female02_bin.js", function( geometry ) {
+		bloader.load( "/obj/veyron/VeyronNoUv_bin.js", function( geometry ) { createMesh( geometry, scene, 6.8, 2200, -200, -100, 0x0055ff, false ) } );
+		bloader.load( "/obj/female02/Female02_bin.js", function( geometry ) {
 			createMesh( geometry, scene, 4.05, -1000, -350,    0, 0xffdd44, true );
 			createMesh( geometry, scene, 4.05,     0, -350,    0, 0xffffff, true );
 			createMesh( geometry, scene, 4.05,  1000, -350,  400, 0xff4422, true );
 			createMesh( geometry, scene, 4.05,   250, -350, 1500, 0xff9955, true );
 			createMesh( geometry, scene, 4.05,   250, -350, 2500, 0xff77dd, true );
 		} );
-		bloader.load( "obj/male02/Male02_bin.js", function( geometry ) {
+		bloader.load( "/obj/male02/Male02_bin.js", function( geometry ) {
 			createMesh( geometry, scene, 4.05,  -500, -350,   600, 0xff7744, true );
 			createMesh( geometry, scene, 4.05,   500, -350,     0, 0xff5522, true );
 			createMesh( geometry, scene, 4.05,  -250, -350,  1500, 0xff9922, true );

@@ -1,6 +1,49 @@
 ﻿var assets = {};
 var docpadConfig = {
 	templateData: {
+		texts: {
+			en: {
+				langName: 'English',
+				title: "X40",
+				description: "Web Development Outsourcing",
+				keywords: "web development, mobile development, outsourcing",
+				toggleNav: "Toggle navigation",
+				menu: "Menu",
+				home: "Home",
+				projects: "Projects",
+				contacts: "Contacts",
+				on: "On",
+				off: "Off",
+				interactiveSites: "Interactive Websites",
+				mobileApps: "Mobile Applications",
+				scalableSystems: "High Load Systems",
+				mobileSites: "Mobile Websites",
+				responsiveSites: "Responsive Websites",
+				socApps: "Social Applications",
+				contactInfo: ""
+			},
+			ru: {
+				langName: 'Русский',
+				title: "X40",
+				description: "Заказная разработка Интернет систем и мобильных приложений",
+				keywords: "разработка мобильных приложений, разработка мобильных версий, заказная разработка, разработка на заказ, программное обеспечение, ПО, разработка информационных систем, разработка сайтов",
+				toggleNav: "Переключить навигацию",
+				menu: "Меню",
+				home: "Главная",
+				projects: "Проекты",
+				contacts: "Контакты",
+				on: "Вкл.",
+				off: "Выкл.",
+				interactiveSites: "Интерактивные сайты",
+				mobileApps: "Мобильные приложения",
+				scalableSystems: "Высоконагруженные системы",
+				mobileSites: "Мобильные версии сайтов",
+				responsiveSites: "Адаптивные сайты",
+				socApps: "Социальные приложения",
+				contactInfo: '<li class="navbar-text phone">+7 (499) 193-32-90</li>'
+			}
+		},
+		txt: function(text) { return this.texts[this.document.lang][text]; },
 		site: {
 			title: "X40",
 			description: "Заказная разработка информационных систем и программного обеспечения",
@@ -8,16 +51,16 @@ var docpadConfig = {
 		},
 		getPreparedTitle: function() {
 			if (this.document.title) {
-				return this.document.title + " | " + this.site.title;
+				return this.document.title + " | " + this.txt('title');
 			} else {
-				return this.site.title;
+				return this.txt('title');
 			}
 		},
 		getPreparedDescription: function() {
-			return this.document.description || this.site.description;
+			return this.document.description || this.txt('description');
 		},
 		getPreparedKeywords: function() {
-			return this.document.keywords || this.site.keywords;
+			return this.document.keywords || this.txt('keywords');
 		},
 		getHead:  function() {
 			return this.document.head || '';
@@ -34,7 +77,7 @@ var docpadConfig = {
 				var crypto = require('crypto');
 				var path = require('path')
 				var shasum = crypto.createHash('sha1');
-				var f = this.getFileAtPath('/'+name);
+				var f = this.getFileAtPath(name);
 				shasum.update(f.attributes.source);
 				var hash = shasum.digest('hex');
 				var srcPath = f.attributes.fullPath;
