@@ -4,7 +4,7 @@ x40.ru
 This is an example of use modern HTML5 and WebGL techniques for responsive web
 design.
 
-Site [www.x40.ru](<http://www.x40.ru>)
+Site [www.x40.ru](<http://www.x40.ru>).
 
 In old browsers, on old video cards and on mobile platforms site displayed in
 simplified design.
