@@ -40,7 +40,7 @@ var docpadConfig = {
 				mobileSites: "Мобильные версии сайтов",
 				responsiveSites: "Адаптивные сайты",
 				socApps: "Социальные приложения",
-				contactInfo: '<li class="navbar-text phone">+7 (499) 193-32-90</li>'
+				contactInfo: ""//'<li class="navbar-text phone">+7 (499) 193-32-90</li>'
 			}
 		},
 		txt: function(text) { return this.texts[this.document.lang][text]; },

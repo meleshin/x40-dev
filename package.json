@@ -11,8 +11,7 @@
     "docpad-plugin-less": "~2.4.0",
     "docpad-plugin-uglify": "~2.3.0",
     "docpad-plugin-cleanurls": "~2.6.2",
-    "docpad": "~6.60.3",
-    "docpad-plugin-raw": "~2.2.3"
+    "docpad": "~6.69.0"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {

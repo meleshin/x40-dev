@@ -8,7 +8,7 @@
 	<meta name="keywords" content="<%= @getPreparedKeywords() %>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="/lib/bootstrap-3.0.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css">
 	<link rel="stylesheet" href="/lib/animate.css-git-20140102/animate.min.css">
 	<script>
 		var mobileCheck = function() {
@@ -42,7 +42,7 @@
 		document.write('<style> #top-nav ul li a{ font-size: 100%; }  #top-nav ul li.phone{ font-size: 100%; padding-top: 4px;} #side-nav ul li a{ font-size: 100%; }<\/style>');
 	}
 </script>
-<div id="loading"><div><img src="/images/loading.gif" /></div></div>
+<div id="loading"><div><i class="fa fa-spinner fa-spin"></i></div></div>
 <div id="off-bg"><i class="fa fa-smile-o fa-lg"></i></div>
 <nav class="navbar navbar-default" role="navigation" id="top-nav">
 	<div class="navbar-header">
@@ -65,7 +65,7 @@
 			<li id="off" style="display:block;"><a class="muted" href="./?off=1"><i class="fa fa-power-off fa-lg aa-fix"></i> <%= @txt('off') %></a></li>
 			<li id="on" style="display:none;"><a class="muted" href="./?on=1"><i class="fa fa-power-off fa-lg"></i> <%= @txt('on') %></a></li>
 			<li><a href="./" class="color1"><i class="fa fa-home fa-lg c"></i> <%= @txt('home') %></a></li>
-			<li><a href="projects" class="color2"><i class="fa fa-check fa-lg"></i> <%= @txt('projects') %></a></li>
+			<li class="hide-on-mobile"><a href="projects.html" class="color2"><i class="fa fa-check fa-lg"></i> <%= @txt('projects') %></a></li>
 			<li><a href="./#contacts" class="color3"><i class="fa fa-phone fa-lg"></i> <%= @txt('contacts') %></a></li>
 			<%- @txt('contactInfo') %>
 			<li class="btn-group pull-left lang">
@@ -73,8 +73,8 @@
 					<%= @txt('langName') %> <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" role="menu">
-					<li><a data-lang="ru" href="/"><%= @texts.ru.langName %></a></li>
-					<li><a data-lang="en" href="/en/"><%= @texts.en.langName %></a></li>
+					<li><a data-lang="ru" href="/ru/"><%= @texts.ru.langName %></a></li>
+					<li><a data-lang="en" href="/"><%= @texts.en.langName %></a></li>
 				</ul>
 			</li>
 		</ul>

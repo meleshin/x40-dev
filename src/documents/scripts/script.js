@@ -1,4 +1,12 @@
 (function() { $(function() {
+	isWin = $('html').hasClass('win');
+	isChrome = $('html').hasClass('chrome');
+	isMobile = $('html').hasClass('mobile-device');
+	var isWebgl = $('html').hasClass('do-webgl');
+	var isPlayVideo = $('html').hasClass('play-video');
+	var isPlayAudio = $('html').hasClass('play-audio');
+	var isParallax = $('html').hasClass('parallax');
+	$.cookie.json = true;
 	var cLang = $.cookie('lang');
 	var lang;
 	if(cLang){
@@ -8,11 +16,11 @@
 	}else if(navigator.browserLanguage){
 		lang = navigator.browserLanguage.substring(0,2);
 	}
-	if(lang === 'ru' && location.href.indexOf('/en/')!=-1){
-		window.location.replace(location.href.replace("/en/", '/'));
+	if(lang !== 'ru' && location.href.indexOf('/ru/')!=-1){
+		window.location.replace(location.href.replace("/ru/", '/'));
 		return;
-	}else if(lang !== 'ru' && location.href.indexOf('/en/')==-1){
-		window.location.replace(location.href.replace(location.host+location.pathname, location.host+'/en'+location.pathname));
+	}else if(lang === 'ru' && location.href.indexOf('/ru/')==-1){
+		window.location.replace(location.href.replace(location.host+location.pathname, location.host+'/ru'+location.pathname));
 		return;
 	}
 	$('.lang a').click(function(e){
@@ -34,8 +42,13 @@
 	}
 	var previosDocmode = $.cookie('docmode');
 	if(document.documentMode) $.cookie('docmode', document.documentMode, {path: '/'});
+	var previosIsMobile = $.cookie('isMobile');
+	$.cookie('isMobile', isMobile, {path: '/'});
 	function getModeCookie(name){
-		if(document.documentMode && document.documentMode != previosDocmode){
+		if(
+			(document.documentMode && document.documentMode != previosDocmode) ||
+			(previosIsMobile !== undefined && previosIsMobile !== isMobile)
+		){
 			return null;
 		}else{
 			return $.cookie(name);
@@ -62,13 +75,6 @@
 		catch(e){ };
 		return res;
 	})();
-	isWin = $('html').hasClass('win');
-	isChrome = $('html').hasClass('chrome');
-	isMobile = $('html').hasClass('mobile-device');
-	var isWebgl = $('html').hasClass('do-webgl');
-	var isPlayVideo = $('html').hasClass('play-video');
-	var isPlayAudio = $('html').hasClass('play-audio');
-	var isParallax = $('html').hasClass('parallax');
 	var docLang = $('html').attr('data-doc-lang');
 	var $scene;
 	var duration = 800;
@@ -82,7 +88,6 @@
 	var pgOutClassCur = 0;
 	var bgOutClasses = ['bounceOutRight', 'bounceOutLeft', 'bounceOutDown', 'bounceOutUp'];
 	var bgOutClassCur = 0;
-	
 	var animationEnd = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
 	var transitionEnd = 'webkitTransitionEnd oTransitionEnd transitionend';
 	var moveFunc = moveClear;//moveBlack;
@@ -105,9 +110,9 @@
 	})();
 	var loadedClips = {};
 	var maxLoadedClips = {
-			'video-bg-wrap': $.cookie('max-loaded-video-bg-wrap'),
-			'sketch-bg-wrap': $.cookie('max-loaded-sketch-bg-wrap'),
-			'three-img-bg-wrap': $.cookie('max-loaded-three-img-bg-wrap')
+			'video-bg-wrap': getModeCookie('max-loaded-video-bg-wrap'),
+			'sketch-bg-wrap': getModeCookie('max-loaded-sketch-bg-wrap'),
+			'three-img-bg-wrap': getModeCookie('max-loaded-three-img-bg-wrap')
 	};
 	var getCursor = function(cookieName){
 		var lc = getModeCookie(cookieName);
@@ -230,14 +235,14 @@
 		if(isWebgl){
 			if(!isIE){
 				return [
-					new ThreeCubemapBalls(),
-					new ThreeParticlesDynamic(),
+					//new ThreeCubemapBalls(),
+					//new ThreeParticlesDynamic(),
 					new ThreeParticlesShapes(),
-					new ThreeParticlesBillboards()
+					//new ThreeParticlesBillboards()
 				]
 			}else{
 				return [
-					new ThreeCubemapBalls(),
+					//new ThreeCubemapBalls(),
 					new ThreeParticlesDynamic()
 				]
 			}
@@ -492,7 +497,7 @@
 			$('#page-wrapper>img.in').each(function(){adjustImg(this)});
 		});
 		nav(location);
-		$("a").click(function(e) {
+		$("a:not(.no-animation)").click(function(e) {
 			if(this.search === '?off=1'){
 				if(!isOff){
 					switchOff();
@@ -586,42 +591,35 @@
 			var fx = (function(){
 				var res = [];
 				var videoClip = function(){ if(isPlayVideo) res.push(videoProcessor); };
-				var sketchClip = function(){ if(!isPlayVideo && !isWebgl) res.push(sketchProcessor); };
+				var sketchClip = function(){ if((!isPlayVideo) && (!isWebgl)) res.push(sketchProcessor); };
 				var threeClip = function(){ if(isWebgl) res.push(threeProcessor); };
 				var threeImgClip = function(){ if(isWebgl) res.push(threeImgProcessor); };
 				// Processors queue
 				if(!isIE){
 					threeClip();
-					threeClip();
-					threeClip();
 					threeImgClip();
 					videoClip();
 					videoClip();
 					threeImgClip();
-					threeClip();
 					videoClip();
 					threeImgClip();
-					threeClip();
 					videoClip();
 					threeImgClip();
-					threeClip();
 					videoClip();
 					threeClip();
 					videoClip();
-					threeClip();
 					videoClip();
 					sketchClip();
 				}else{
-					threeClip();
+					videoClip();
+					threeImgClip();
 					threeClip();
 					threeImgClip();
 					videoClip();
 					threeImgClip();
 					videoClip();
-					threeClip();
 					videoClip();
 					threeImgClip();
-					threeClip();
 					videoClip();
 					threeClip();
 					videoClip();
@@ -852,7 +850,7 @@
 					var $bg = $(clip.fx.container);
 					clip.fx.start();
 					if(clip.link && clip.author) {
-						$(hash+' .bg-author').text('Фото: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+						$(hash+' .bg-author').text('Photo by ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 					}else{
 						$(hash+' .bg-author').empty();
 					}
@@ -868,7 +866,7 @@
 				bgView(bgWrapId, videoClips, function($video, ind){
 					var clip = videoClips[ind];
 					if(clip.link && clip.author){
-						$(hash+' .bg-author').text('Видео: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+						$(hash+' .bg-author').text('Video by ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 					}else{
 						$(hash+' .bg-author').empty();
 					}
@@ -899,7 +897,7 @@
 				bgView(bgWrapId, sketchClips, function($img, ind){
 					var clip = sketchClips[ind];
 					if(clip.link && clip.author){
-						$(hash+' .bg-author').text('Фон: ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
+						$(hash+' .bg-author').text('Background by ').append('<a target="_blank" href="'+clip.link+'">'+clip.author+'</a>');
 					}else{
 						$(hash+' .bg-author').empty();
 					}
