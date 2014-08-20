@@ -6,23 +6,6 @@
 	var isPlayVideo = $('html').hasClass('play-video');
 	var isPlayAudio = $('html').hasClass('play-audio');
 	var isParallax = $('html').hasClass('parallax');
-	$.cookie.json = true;
-	var cLang = $.cookie('lang');
-	var lang;
-	if(cLang){
-		lang = cLang
-	}else if(navigator.language){
-		lang = navigator.language.substring(0,2);
-	}else if(navigator.browserLanguage){
-		lang = navigator.browserLanguage.substring(0,2);
-	}
-	if(lang !== 'ru' && location.href.indexOf('/ru/')!=-1){
-		window.location.replace(location.href.replace("/ru/", '/'));
-		return;
-	}else if(lang === 'ru' && location.href.indexOf('/ru/')==-1){
-		window.location.replace(location.href.replace(location.host+location.pathname, location.host+'/ru'+location.pathname));
-		return;
-	}
 	$('.lang a').click(function(e){
 		$.cookie('lang', $(this).attr('data-lang'), {path: '/'});
 	});

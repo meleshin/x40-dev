@@ -37,7 +37,24 @@
 	<%- @getHead() %>
 </head>
 <body>
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
 <script>
+	$.cookie.json = true;
+	var cLang = $.cookie('lang');
+	var lang;
+	if(cLang){
+		lang = cLang
+	}else if(navigator.language){
+		lang = navigator.language.substring(0,2);
+	}else if(navigator.browserLanguage){
+		lang = navigator.browserLanguage.substring(0,2);
+	}
+	if(lang !== 'ru' && location.href.indexOf('/ru/')!=-1){
+		window.location.replace(location.href.replace("/ru/", '/'));
+	}else if(lang === 'ru' && location.href.indexOf('/ru/')==-1){
+		window.location.replace(location.href.replace(location.host+location.pathname, location.host+'/ru'+location.pathname));
+	}
 	if (Function('/*@cc_on return document.documentMode===8@*/')()){
 		document.write('<style> #top-nav ul li a{ font-size: 100%; }  #top-nav ul li.phone{ font-size: 100%; padding-top: 4px;} #side-nav ul li a{ font-size: 100%; }<\/style>');
 	}
@@ -108,8 +125,6 @@
 </script>
 <![endif]-->
 <%- @getBlock('scripts').toHTML() %>
-<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="//cdn.jsdelivr.net/jquery.cookie/1.4.0/jquery.cookie.min.js"></script>
 <script src="/lib/jquery-color-git-20140121/jquery.color.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
