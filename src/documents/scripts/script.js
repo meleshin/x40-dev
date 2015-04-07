@@ -114,32 +114,32 @@
 	var filmDirect = 1;
 	var seq;
 	var videoClips = [
-			{src: "/video/circ.hole_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/15533570', author: 'beeple'},
-			{src: "/video/cross6_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author:'beeple'},
-			{src: "/video/nodes_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/9936271', author:'beeple'},
-			{src: "/video/lightgrid_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'}
+			{src: "/clips/circ.hole_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/15533570', author: 'beeple'},
+			{src: "/clips/cross6_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author:'beeple'},
+			{src: "/clips/nodes_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/9936271', author:'beeple'},
+			{src: "/clips/lightgrid_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'}
 			/* Also may be used:
-			{src: "/video/newprs_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/16038839', author:'beeple'},
-			{src: "/video/rmx_(loop)_1280x560.mp4", w: 1280, h: 560, audio: true, link: 'http://vimeo.com/79293746', author: 'beeple'}
+			{src: "/clips/newprs_(loop)_1280x720.mp4", w: 1280, h: 720, link: 'http://vimeo.com/16038839', author:'beeple'},
+			{src: "/clips/rmx_(loop)_1280x560.mp4", w: 1280, h: 560, audio: true, link: 'http://vimeo.com/79293746', author: 'beeple'}
 			*/
 		];
 	var sketchClips = isMobile ? (
 			$(window).width() <= 640 ? [
-				{src: "/video/lightgrid_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-				{src: "/video/cross6_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+				{src: "/clips/lightgrid_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+				{src: "/clips/cross6_(loop)_m.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
 			] : [
-				{src: "/video/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-				{src: "/video/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
+				{src: "/clips/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+				{src: "/clips/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
 			]
 		) : [
-			{src: "/video/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "/video/cross6_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "/video/lightgrid_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "/video/cross6_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "/video/lightgrid_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "/video/cross6_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
-			{src: "/video/lightgrid_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
-			{src: "/video/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
+			{src: "/clips/lightgrid_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/clips/cross6_(loop)_1280x720.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/clips/lightgrid_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/clips/cross6_(loop)_1280x720-a.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/clips/lightgrid_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/clips/cross6_(loop)_1280x720-c.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'},
+			{src: "/clips/lightgrid_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/76432043', author: 'beeple'},
+			{src: "/clips/cross6_(loop)_1280x720-b.jpg", w: 1280, h: 720, link: 'http://vimeo.com/11162767', author: 'beeple'}
 			/* Also may be used:
 			{src: "/images/bg/black-crystal.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},
 			{src: "/images/bg/bubbles.jpg", w: 1920, h: 1080, link: 'http://www.openslowmo.com/', author: 'openslowmo.com'},

@@ -1,4 +1,4 @@
-GH_PAGES=../x40-gh-pages
+GH_PAGES=../x40-dev-gh-pages
 
 js:
 	jshint src/documents/scripts/script.js
