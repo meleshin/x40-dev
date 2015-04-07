@@ -1,1 +1,23 @@
-@import url(http://fonts.googleapis.com/css?family=Dosis:400|Open+Sans+Condensed:300,700|Marmelad:400&subset=latin,cyrillic);h1{font-family:"Marmelad",Arial,Helvetica,sans-serif;font-weight:400}#top-nav a,#side-nav a{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300}.page-box.center-menu a{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:300;text-decoration:none;font-style:italic}h2,h3,h4,.descr .name,#top-nav li.phone{font-family:"Open Sans Condensed",Arial,Helvetica,sans-serif;font-weight:700}#top-nav a.navbar-brand{font-family:"Dosis",Arial,Helvetica,sans-serif;font-weight:400}
+@import url(http://fonts.googleapis.com/css?family=Dosis:400|Open+Sans+Condensed:300,700|Marmelad:400&subset=latin,cyrillic);
+h1{
+	font-family: "Marmelad", Arial, Helvetica, sans-serif;
+	font-weight: 400;
+}
+#top-nav a, #side-nav a{
+	font-family: "Open Sans Condensed", Arial, Helvetica, sans-serif;
+	font-weight: 300;
+}
+.page-box.center-menu a{
+	font-family: "Open Sans Condensed", Arial, Helvetica, sans-serif;
+	font-weight: 300;
+	text-decoration: none;
+	font-style: italic;
+}
+h2, h3, h4, .descr .name, #top-nav li.phone {
+	font-family: "Open Sans Condensed", Arial, Helvetica, sans-serif;
+	font-weight: 700;
+}
+#top-nav a.navbar-brand{
+	font-family: "Dosis", Arial, Helvetica, sans-serif;
+	font-weight: 400;
+}
